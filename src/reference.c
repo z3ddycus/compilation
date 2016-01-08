@@ -9,11 +9,11 @@ struct _ref{
 		
 		char* address;
 		char* abstract;
-		SortedSet annote;
-		SortedSet author;
+		char* annote;
+		char* author;
 		char* booktitle;
-		SortedSet chapter;
-		SortedSet crossref;
+		char* chapter;
+		char* crossref;
 		char* edition;
 		char* editor;
 		char* eprint;
@@ -22,16 +22,16 @@ struct _ref{
 		char* journal;
 		char* key;
 		char* month;
-		SortedSet note;
-		SortedSet number;
-		SortedSet organization;
-		SortedSet pages;
+		char* note;
+		char* number;
+		char* organization;
+		char* pages;
 		char* publisher;
 		char* school;
 		char* series;
 		char* title;
 		char* url;
-		SortedSet volume;
+		char* volume;
 		char* year;
 };
 
