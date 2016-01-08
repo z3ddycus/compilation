@@ -1,15 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "include/sorted_set.h"
+#include "include/sorted_map.h"
 
 typedef struct _cell * Cell;
 
 struct _cell {
+	void* key;
 	void* value;
 	Cell next;
 };
  
-struct _set {
+struct _Map {
 		int (*compar)(void*,void*);
 		Cell head;
 		size_t size;
@@ -22,10 +23,10 @@ struct _set {
 // CONSTRUCTOR
 
 /**
- * Create and allocate a new empty SortieSet.
+ * Create and allocate a new empty SortieMap.
  */
-SortedSet newSet(int (* compar)(void*,void*)) {
-	SortedSet result = malloc(sizeof(*result));
+SortedMap newMap(int (* compar)(void*,void*)) {
+	SortedMap result = malloc(sizeof(*result));
 	result->compar = compar;
 	result->size = 0;
 	result->cur = NULL;
@@ -36,10 +37,10 @@ SortedSet newSet(int (* compar)(void*,void*)) {
 
 // FREE
 /**
- * Free the memory allocated from the SortedSet.
+ * Free the memory allocated from the SortedMap.
  */
-void deleteSet(SortedSet* l) {
-	clearSet(*l);
+void deleteMap(SortedMap* l) {
+	clearMap(*l);
 	free(*l);
 	*l = NULL;
 }
@@ -47,24 +48,24 @@ void deleteSet(SortedSet* l) {
 // GETTERS
 
 /**
- * Test if the SortedSet contains the key
+ * Test if the SortedMap contains the key
  */
-int containsSet(SortedSet l, void* element) {
-	return getSet(l, element) != NULL;
+int containsMap(SortedMap l, void* key) {
+	return getMap(l, key) != NULL;
 }
  
 /**
- * Get SortedSet's length
+ * Get SortedMap's length
  */
-size_t lengthSet(SortedSet l) {
+size_t lengthMap(SortedMap l) {
 	return l->size;
 }
 
 /**
- * Get element in SortedSet
+ * Get element in SortedMap
  */
-void* getSet(SortedSet l, void* element) {
-	if (l->cur != NULL && l->compar(l->cur->value, element)) 
+void* getMap(SortedMap l, void* key) {
+	if (l->cur != NULL && l->compar(l->cur->key, key)) 
 	{
 		return l->cur->value;
 	} 
@@ -75,7 +76,7 @@ void* getSet(SortedSet l, void* element) {
 		int result = 0;
 		while(continu && tmp != NULL) 
 		{
-				int comparValue = l->compar(tmp->value, element);
+				int comparValue = l->compar(tmp->key, key);
 				if (comparValue == 0) 
 				{
 					l->cur = tmp;
@@ -98,26 +99,26 @@ void* getSet(SortedSet l, void* element) {
 	}
 }
 
-// SETTERS
+// MapTERS
 
 /**
- * Insert element in SortedSet
+ * Insert element in SortedMap
  */
-void insertSet(SortedSet l, void* element) {
-	if (containsSet(l, element)) 
+void insertMap(SortedMap l, void* key, void* value) {
+	if (containsMap(l, key)) 
 	{
-		l->cur->value = element;
+		l->cur->value = value;
 	} 
 	else 
 	{
 		++l->size;
 		Cell newCell = malloc(sizeof(*newCell));
-		newCell->value = element;
-		if (l->compar(element, l->head->value) > 0) 
+		newCell->value = value;
+		newCell->key = key;
+		if (l->compar(key, l->head->key) > 0) 
 		{	
 			newCell->next = l->head;
 			l->head = newCell;
-			
 		} 
 		else 
 		{
@@ -126,7 +127,7 @@ void insertSet(SortedSet l, void* element) {
 			int continu = 1;
 			while(continu && cur != NULL)
 			{
-				if(cur == NULL || l->compar(element, cur->value) < 0)
+				if(cur == NULL || l->compar(key, cur->key) < 0)
 				{
 					prec->next = newCell;
 					newCell->next = cur;
@@ -142,10 +143,10 @@ void insertSet(SortedSet l, void* element) {
 }
 
 /**
- * Remove element in SortedSet
+ * Remove element in SortedMap
  */
-void* removeSet(SortedSet l, void* element) {
-	if (containsSet(l, element)) 
+void* removeMap(SortedMap l, void* key) {
+	if (containsMap(l, key)) 
 	{
 		l->iterator = NULL;
 		--l->size;
@@ -158,9 +159,9 @@ void* removeSet(SortedSet l, void* element) {
 }
 
 /**
- * Clear SortedSet
+ * Clear SortedMap
  */
-void clearSet(SortedSet l) {
+void clearMap(SortedMap l) {
 	l->iterator = NULL;
 	l->size = 0;
 	while(l->head != NULL) {
@@ -176,21 +177,21 @@ void clearSet(SortedSet l) {
 /**
  * Initialize the iterator
  */
-void initIteratorMap(SortedSet l) {
+void initIteratorMap(SortedMap l) {
 	l->iterator = l->head;
 }
 
 /**
  * Test if there is a next element
  */
-int hasNext(SortedSet l) {
+int hasNext(SortedMap l) {
 	return l->iterator != NULL;
 }
 
 /**
  * Return the next element
  */
-void* next(SortedSet l) {
+void* next(SortedMap l) {
 	if (l->iterator == NULL) {
 		fprintf(stderr, "the iterator don't have a next element");
 	}

@@ -58,4 +58,21 @@ void* removeSet(SortedSet l, void* element);
  */
 void clearSet(SortedSet l);
 
+// ITERATOR
+
+/**
+ * Initialize the iterator
+ */
+void initIteratorMap(SortedSet l);
+
+/**
+ * Test if there is a next element
+ */
+int hasNext(SortedSet l);
+
+/**
+ * Return the next element
+ */
+void* next(SortedSet l);
+
 #endif // SORTED_SET_H
