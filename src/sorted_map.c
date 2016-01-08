@@ -184,14 +184,14 @@ void initIteratorMap(SortedMap l) {
 /**
  * Test if there is a next element
  */
-int hasNext(SortedMap l) {
+int hasNextMap(SortedMap l) {
 	return l->iterator != NULL;
 }
 
 /**
  * Return the next element
  */
-void* next(SortedMap l) {
+void* nextMap(SortedMap l) {
 	if (l->iterator == NULL) {
 		fprintf(stderr, "the iterator don't have a next element");
 	}
