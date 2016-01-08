@@ -1,12 +1,12 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "include/sorted_set.h"
+#include "include/sorted_map.h"
 #include "include/hashmap.h"
 
 #define SIZE_HASHMAP 1024
 
 struct _hashmap {
-	SortedSet* lists;
+	SortedMap* lists;
 	size_t (*hash) (void*);
 	int (*compar) (void*, void*);
 	size_t size;
@@ -30,7 +30,7 @@ HashMap newHashMap(size_t (*hash) (void*), int (*compar) (void*, void*)) {
 		exit(EXIT_FAILURE);
 	}
 	for (int k = 0; k < SIZE_HASHMAP; ++k) {
-		map->lists = newSet();
+		map->lists[k] = newMap(compar);
 	}
 	
 	

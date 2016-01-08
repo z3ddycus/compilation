@@ -9,7 +9,6 @@ int main(int argc, char**argv) {
 	/**
 	  -b 1 arg  : genere un bibtex a partir d'un .tex
 		-c 1 arg  : verifie que chaque toutes les entrées ont une entrée propre 
-								???
 		-e 3 args : extraction d'un bibtex par filtre regexp
 		-k 1 arg  : normalise les clés d'un .bib
 		-s 1 arg  : extraction des champs pour tri
