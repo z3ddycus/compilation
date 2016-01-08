@@ -1,0 +1,264 @@
+Grammaire
+
+    0 $accept: ligne $end
+
+    1 ligne: ligne expr '\n'
+    2      | ligne '\n'
+    3      | %empty
+
+    4 expr: expr '+' terme
+    5     | expr '-' terme
+    6     | terme
+
+    7 terme: terme '*' facteur
+    8      | terme '/' facteur
+    9      | facteur
+
+   10 facteur: '-' facteur
+   11        | '(' expr ')'
+   12        | NOMBRE
+
+
+Terminaux, suivis des règles où ils apparaissent
+
+$end (0) 0
+'\n' (10) 1 2
+'(' (40) 11
+')' (41) 11
+'*' (42) 7
+'+' (43) 4
+'-' (45) 5 10
+'/' (47) 8
+error (256)
+NOMBRE (258) 12
+
+
+Non-terminaux, suivis des règles où ils apparaissent
+
+$accept (11)
+    à gauche: 0
+ligne (12)
+    à gauche: 1 2 3, à droite: 0 1 2
+expr (13)
+    à gauche: 4 5 6, à droite: 1 4 5 11
+terme (14)
+    à gauche: 7 8 9, à droite: 4 5 6 7 8
+facteur (15)
+    à gauche: 10 11 12, à droite: 7 8 9 10
+
+
+État 0
+
+    0 $accept: . ligne $end
+
+    $défaut  réduction par utilisation de la règle 3 (ligne)
+
+    ligne  aller à l'état 1
+
+
+État 1
+
+    0 $accept: ligne . $end
+    1 ligne: ligne . expr '\n'
+    2      | ligne . '\n'
+
+    $end    décalage et aller à l'état 2
+    NOMBRE  décalage et aller à l'état 3
+    '\n'    décalage et aller à l'état 4
+    '-'     décalage et aller à l'état 5
+    '('     décalage et aller à l'état 6
+
+    expr     aller à l'état 7
+    terme    aller à l'état 8
+    facteur  aller à l'état 9
+
+
+État 2
+
+    0 $accept: ligne $end .
+
+    $défaut  accepter
+
+
+État 3
+
+   12 facteur: NOMBRE .
+
+    $défaut  réduction par utilisation de la règle 12 (facteur)
+
+
+État 4
+
+    2 ligne: ligne '\n' .
+
+    $défaut  réduction par utilisation de la règle 2 (ligne)
+
+
+État 5
+
+   10 facteur: '-' . facteur
+
+    NOMBRE  décalage et aller à l'état 3
+    '-'     décalage et aller à l'état 5
+    '('     décalage et aller à l'état 6
+
+    facteur  aller à l'état 10
+
+
+État 6
+
+   11 facteur: '(' . expr ')'
+
+    NOMBRE  décalage et aller à l'état 3
+    '-'     décalage et aller à l'état 5
+    '('     décalage et aller à l'état 6
+
+    expr     aller à l'état 11
+    terme    aller à l'état 8
+    facteur  aller à l'état 9
+
+
+État 7
+
+    1 ligne: ligne expr . '\n'
+    4 expr: expr . '+' terme
+    5     | expr . '-' terme
+
+    '\n'  décalage et aller à l'état 12
+    '+'   décalage et aller à l'état 13
+    '-'   décalage et aller à l'état 14
+
+
+État 8
+
+    6 expr: terme .
+    7 terme: terme . '*' facteur
+    8      | terme . '/' facteur
+
+    '*'  décalage et aller à l'état 15
+    '/'  décalage et aller à l'état 16
+
+    $défaut  réduction par utilisation de la règle 6 (expr)
+
+
+État 9
+
+    9 terme: facteur .
+
+    $défaut  réduction par utilisation de la règle 9 (terme)
+
+
+État 10
+
+   10 facteur: '-' facteur .
+
+    $défaut  réduction par utilisation de la règle 10 (facteur)
+
+
+État 11
+
+    4 expr: expr . '+' terme
+    5     | expr . '-' terme
+   11 facteur: '(' expr . ')'
+
+    '+'  décalage et aller à l'état 13
+    '-'  décalage et aller à l'état 14
+    ')'  décalage et aller à l'état 17
+
+
+État 12
+
+    1 ligne: ligne expr '\n' .
+
+    $défaut  réduction par utilisation de la règle 1 (ligne)
+
+
+État 13
+
+    4 expr: expr '+' . terme
+
+    NOMBRE  décalage et aller à l'état 3
+    '-'     décalage et aller à l'état 5
+    '('     décalage et aller à l'état 6
+
+    terme    aller à l'état 18
+    facteur  aller à l'état 9
+
+
+État 14
+
+    5 expr: expr '-' . terme
+
+    NOMBRE  décalage et aller à l'état 3
+    '-'     décalage et aller à l'état 5
+    '('     décalage et aller à l'état 6
+
+    terme    aller à l'état 19
+    facteur  aller à l'état 9
+
+
+État 15
+
+    7 terme: terme '*' . facteur
+
+    NOMBRE  décalage et aller à l'état 3
+    '-'     décalage et aller à l'état 5
+    '('     décalage et aller à l'état 6
+
+    facteur  aller à l'état 20
+
+
+État 16
+
+    8 terme: terme '/' . facteur
+
+    NOMBRE  décalage et aller à l'état 3
+    '-'     décalage et aller à l'état 5
+    '('     décalage et aller à l'état 6
+
+    facteur  aller à l'état 21
+
+
+État 17
+
+   11 facteur: '(' expr ')' .
+
+    $défaut  réduction par utilisation de la règle 11 (facteur)
+
+
+État 18
+
+    4 expr: expr '+' terme .
+    7 terme: terme . '*' facteur
+    8      | terme . '/' facteur
+
+    '*'  décalage et aller à l'état 15
+    '/'  décalage et aller à l'état 16
+
+    $défaut  réduction par utilisation de la règle 4 (expr)
+
+
+État 19
+
+    5 expr: expr '-' terme .
+    7 terme: terme . '*' facteur
+    8      | terme . '/' facteur
+
+    '*'  décalage et aller à l'état 15
+    '/'  décalage et aller à l'état 16
+
+    $défaut  réduction par utilisation de la règle 5 (expr)
+
+
+État 20
+
+    7 terme: terme '*' facteur .
+
+    $défaut  réduction par utilisation de la règle 7 (terme)
+
+
+État 21
+
+    8 terme: terme '/' facteur .
+
+    $défaut  réduction par utilisation de la règle 8 (terme)

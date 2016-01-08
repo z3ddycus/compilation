@@ -1,67 +1,40 @@
-CC       = gcc
-CFLAGS   = -Wall -pedantic -std=c11 -O2 -ffunction-sections -fdata-sections -D_XOPEN_SOURCE=700
+LEX=flex
+YACC=bison
+CC=gcc
+CFLAGS=-std=c99 -pedantic -Wall
+LDFLAGS=-ll -lm
+LFLAGS=-D_POSIX_SOURCE -DYY_NO_INPUT --nounput
 
-LFLAGS   = -Wl,--gc-sections 
+SRC=src
+HEADER=$(SRC)/include
+BIN=bin
+OBJ=obj
 
-SRCDIR   = src
-OBJDIR   = obj
-BINDIR	 = bin
+EXEC=$(BIN)/mybib
 
-TARGETS := $(BINDIR)/gen_text $(BINDIR)/gen_words $(BINDIR)/ac-matrice $(BINDIR)/ac-liste $(BINDIR)/ac-mixte
-MAINOBJ	:= $(OBJDIR)/main.o
+$(EXEC): $(OBJ)/lex.yy.o $(OBJ)/mybib.tab.o
+	@mkdir -p BIN
+	@mkdir -p OBJ
+	$(CC) $+ -o $@ $(LDFLAGS)
 
-SOURCES  := $(wildcard $(SRCDIR)/*.c)
-OBJECTS  := $(SOURCES:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
-OTHERS 	 := $(OBJDIR)/gen_text.o $(OBJDIR)/gen_words.o $(OBJDIR)/ac_main.o $(OBJDIR)/mixed_trie.o $(OBJDIR)/list_trie.o $(OBJDIR)/matrix_trie.o
+$(SRC)/lex.yy.c: $(SRC)/mybib.lex $(HEADER)/mybib.tab.h
+	$(LEX) -o $@ $(LFLAGS) $<
+	@echo "src ok"
 
-all: objects $(BINDIR)/genere-texte $(BINDIR)/genere-mots $(BINDIR)/ac-liste $(BINDIR)/ac-matrice $(BINDIR)/ac-mixte
-	@echo "Construction du projet terminée.\n"
+$(HEADER)/lex.yy.h: $(SRC)/mybib.lex
+	$(LEX) —header-file=$@ $(LFLAGS) $<
+	@echo "lex yy h ok"
 
-$(BINDIR)/genere-texte: $(OBJECTS)
-	@mkdir -p $(BINDIR)
-	$(CC) -o $@ $(OBJDIR)/gen_text.o $(filter-out $(OTHERS), $(OBJECTS)) $(LFLAGS)
-	@echo "Construction de $@ teminée."
-	@echo "----------"
+$(SRC)/mybib.tab.c: $(SRC)/mybib.y $(HEADER)/lex.yy.h
+	$(YACC) -o $@ $< -d -v
+	@echo "yacc C ok"
 
-$(BINDIR)/genere-mots: $(OBJECTS)
-	@mkdir -p $(BINDIR)
-	$(CC) -o $@ $(OBJDIR)/gen_words.o $(filter-out $(OTHERS), $(OBJECTS)) $(LFLAGS)
-	@echo "Construction de $@ teminée."
-	@echo "----------"
+$(HEADER)/mybib.tab.h: $(SRC)/mybib.y $(HEADER)/lex.yy.h
+	$(YACC) -o $@ $< -d -v
+	@echo "yacc H ok"
 
-$(BINDIR)/ac-matrice: $(OBJECTS)
-	@mkdir -p $(BINDIR)
-	$(CC) -o $@ $(OBJDIR)/ac_main.o $(OBJDIR)/matrix_trie.o $(filter-out $(OTHERS), $(OBJECTS)) $(LFLAGS)
-	@echo "Construction de $@ teminée."
-	@echo "----------"
-
-$(BINDIR)/ac-liste: $(OBJECTS)
-	@mkdir -p $(BINDIR)
-	$(CC) -o $@ $(OBJDIR)/ac_main.o $(OBJDIR)/list_trie.o $(filter-out $(OTHERS), $(OBJECTS)) $(LFLAGS)
-	@echo "Construction de $@ teminée."
-	@echo "----------"
-
-$(BINDIR)/ac-mixte: $(OBJECTS)
-	@mkdir -p $(BINDIR)
-	$(CC) -o $@ $(OBJDIR)/ac_main.o $(OBJDIR)/mixed_trie.o $(filter-out $(OTHERS), $(OBJECTS)) $(LFLAGS)
-	@echo "Construction de $@ teminée."
-	@echo "----------"
-
-objects: $(OBJECTS)
-	@echo "Compilation des sources terminée."
-	@echo "----------"
-
-$(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.c
-	@mkdir -p $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+$(OBJ)/%.o: $(SRC)/%.c
+	$(CC) $(CFLAGS) $< -c
 
 clean:
-	$(RM) -r $(OBJDIR)
-	@echo "----------"
-	@echo "Nettoyage des objets terminé."
-	@echo "NB : Pour nettoyer complètement le projet, utiliser \"make cleaner\".\n"
-
-cleaner:
-	$(RM) -r $(OBJDIR) $(BINDIR)
-	@echo "----------"
-	@echo "Nettoyage du projet terminé.\n"
+	-rm $(EXEC) $(OBJ) $(SRC)/lex.yy.* $(HEADER)/lex.yy.* $(SRC)/mybib.tab.* $(HEADER)/mybib.tab.*
