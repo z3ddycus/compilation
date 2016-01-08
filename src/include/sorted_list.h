@@ -5,9 +5,6 @@
 
 #define GET_ERR 0
 
-#define SET 1
-#define LIST 0
-
 /**
  * Generic SortedList type, can support NULL element.
  */
@@ -18,7 +15,7 @@ typedef struct _list *SortedList;
 /**
  * Create and allocate a new empty SortieList.
  */
-SortedList newList(int * (*compar)(void*,void*), int isSet);
+SortedList newList(int * (*compar)(void*,void*));
 
 
 // FREE
@@ -32,7 +29,7 @@ void deleteList(SortedList* l);
 /**
  * Test if the SortedList contains the key
  */
-int containsList(SortedList l, void* key); 
+int containsList(SortedList l, void* element); 
  
 /**
  * Get SortedList's length
@@ -42,19 +39,19 @@ size_t lengthList(SortedList l);
 /**
  * Get element in SortedList
  */
-void* getList(SortedList l, void* key);
+void* getList(SortedList l, void* element);
 
 // SETTERS
 
 /**
  * Insert element in SortedList
  */
-void insertList(SortedList l, void* key, void* value);
+void insertList(SortedList l, void* element);
 
 /**
  * Remove element in SortedList
  */
-void removeList(SortedList l, void* key);
+void removeList(SortedList l, void* element);
 
 /**
  * Clear SortedList
