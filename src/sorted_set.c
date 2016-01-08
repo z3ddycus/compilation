@@ -176,21 +176,21 @@ void clearSet(SortedSet l) {
 /**
  * Initialize the iterator
  */
-void initIteratorMap(SortedSet l) {
+void initIteratorSet(SortedSet l) {
 	l->iterator = l->head;
 }
 
 /**
  * Test if there is a next element
  */
-int hasNext(SortedSet l) {
+int hasNextSet(SortedSet l) {
 	return l->iterator != NULL;
 }
 
 /**
  * Return the next element
  */
-void* next(SortedSet l) {
+void* nextSet(SortedSet l) {
 	if (l->iterator == NULL) {
 		fprintf(stderr, "the iterator don't have a next element");
 	}

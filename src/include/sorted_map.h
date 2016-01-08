@@ -68,10 +68,10 @@ void initIteratorMap(SortedMap l);
 /**
  * Test if there is a next element
  */
-int hasNext(SortedMap l);
+int hasNextMap(SortedMap l);
 
 /**
  * Return the next element
  */
-void* next(SortedMap l);
+void* nextMap(SortedMap l);
 #endif // SORTED_MAP_H

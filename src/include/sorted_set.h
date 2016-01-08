@@ -63,16 +63,16 @@ void clearSet(SortedSet l);
 /**
  * Initialize the iterator
  */
-void initIteratorMap(SortedSet l);
+void initIteratorSet(SortedSet l);
 
 /**
  * Test if there is a next element
  */
-int hasNext(SortedSet l);
+int hasNextSet(SortedSet l);
 
 /**
  * Return the next element
  */
-void* next(SortedSet l);
+void* nextSet(SortedSet l);
 
 #endif // SORTED_SET_H
