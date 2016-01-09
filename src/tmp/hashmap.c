@@ -3,7 +3,7 @@
 #include "include/sorted_map.h"
 #include "include/hashmap.h"
 
-#define SIZE_HASHMAP 1024
+#define SIZE_HASHMAP 3
 
 struct _hashmap {
 	SortedMap* lists;
