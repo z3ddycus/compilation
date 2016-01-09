@@ -99,7 +99,7 @@ void* getMap(SortedMap l, void* key) {
 	}
 }
 
-// MapTERS
+// SETTERS
 
 /**
  * Insert element in SortedMap
@@ -125,10 +125,11 @@ void insertMap(SortedMap l, void* key, void* value) {
 			Cell cur = l->head->next;
 			Cell prec = l->head;
 			int continu = 1;
-			while(continu && cur != NULL)
+			while(continu)
 			{
-				if(cur == NULL || l->compar(key, cur->key) < 0)
+				if(cur == NULL || l->compar(key, cur->key) > 0)
 				{
+					continu = 0;
 					prec->next = newCell;
 					newCell->next = cur;
 				}
@@ -194,8 +195,19 @@ int hasNextMap(SortedMap l) {
 void* nextMap(SortedMap l) {
 	if (l->iterator == NULL) {
 		fprintf(stderr, "the iterator don't have a next element");
+		exit(EXIT_FAILURE);
 	}
 	void* result = l->iterator->value;
 	l->iterator = l->iterator->next;
 	return result;
+}
+
+void toString(SortedMap l) {
+	printf("Entete\n");
+	printf("\t Head : %s\n\tSize : %zu\n", (char*)l->head, l->size);
+	Cell cur = l->head;
+	while(cur != NULL) {
+		printf("Element\n\t%s\n\t%s\n\t%s\n", (char*)cur->key, (char*)cur->value, (char*)cur->next);
+		cur = cur->next;
+	}
 }
