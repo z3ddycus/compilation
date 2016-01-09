@@ -115,7 +115,7 @@ void insertMap(SortedMap l, void* key, void* value) {
 		Cell newCell = malloc(sizeof(*newCell));
 		newCell->value = value;
 		newCell->key = key;
-		if (l->compar(key, l->head->key) > 0) 
+		if (l->head == NULL || l->compar(key, l->head->key) > 0) 
 		{	
 			newCell->next = l->head;
 			l->head = newCell;

@@ -5,6 +5,8 @@
 #include "mybib.tab.h"
 #include "include/sorted_set.h"
 #include "include/list.h"
+#include "include/mybib.tab.h"
+%}
 
 SortedSet keys;
 List files;
