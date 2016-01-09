@@ -11,7 +11,7 @@ LEX = flex
 YACC = bison
 CC = gcc
 CFLAGS = -std=c11 -pedantic -g -Wall
-LDFLAGS = -ll -lm
+LDFLAGS = -ll
 LFLAGS = -D_POSIX_SOURCE -o $@ -DYY_NO_INPUT --nounput
 
 all: pre $(OBJECTS) $(BINDIR)/$(TARGET)
