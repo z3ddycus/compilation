@@ -113,7 +113,7 @@ void insertSet(SortedSet l, void* element) {
 		++l->size;
 		Cell newCell = malloc(sizeof(*newCell));
 		newCell->value = element;
-		if (l->compar(element, l->head->value) > 0) 
+		if (l->head == NULL || l->compar(element, l->head->value) > 0) 
 		{	
 			newCell->next = l->head;
 			l->head = newCell;
