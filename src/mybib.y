@@ -1,29 +1,38 @@
 %{
     #include <stdio.h>
     #include <stdlib.h>
-    #include "include/lex.yy.h"
+    #include "lex.yy.h"
     void yyerror(const char *s);
-    %}
-%token NOMBRE
+%}
+
+%token NUMBER TOKHEAT STATE TOKTARGET TOKTEMPERATURE
+
 %%
-ligne   : ligne expr '\n' {printf("resultat : %f \n",$2);}
-| ligne '\n'
+
+commands: /* empty */
+| commands command
+;
+
+command:
+heat_switch
 |
+target_set
 ;
-expr    : expr '+' terme {$$=$1+$3;}
-| expr '-' terme {}
-| terme
+
+heat_switch:
+TOKHEAT STATE
+{
+    printf("\tHeat turned on or off\n");
+}
 ;
-terme   : terme '*' facteur {}
-| terme '/' facteur {}
-| facteur
-;
-facteur : '-' facteur {}
-| '(' expr ')' {}
-| NOMBRE {$$ = $1;}
+
+target_set:
+TOKTARGET TOKTEMPERATURE NUMBER
+{
+    printf("\tTemperature set\n");
+}
 ;
 %%
 void yyerror(const char *s) {
     fprintf(stderr,"%s\n", s);
 }
-
