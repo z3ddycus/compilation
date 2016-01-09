@@ -10,7 +10,7 @@ OBJECTS  := $(filter-out $(OBJDIR)/lex.yy.o $(OBJDIR)/$(TARGET).tab.o, $(SOURCES
 LEX = flex
 YACC = bison
 CC = gcc
-CFLAGS = -std=c99 -pedantic -g -Wall
+CFLAGS = -std=c11 -pedantic -g -Wall
 LDFLAGS = -ll -lm
 LFLAGS = -D_POSIX_SOURCE -o $@ -DYY_NO_INPUT --nounput
 
@@ -23,7 +23,7 @@ $(BINDIR)/$(TARGET): $(OBJECTS) $(OBJDIR)/lex.yy.o $(OBJDIR)/$(TARGET).tab.o
 	$(CC) $+ -o $@ $(LDFLAGS)
 
 $(SRCDIR)/lex.yy.c: $(SRCDIR)/$(TARGET).lex $(SRCDIR)/$(TARGET).tab.h
-	$(LEX) -o $(SRCDIR)/lex.yy.c -D_POSIX_SOURCE $<
+	$(LEX) $(LFLAGS) $<
 
 $(SRCDIR)/lex.yy.h: $(SRCDIR)/$(TARGET).lex
 	$(LEX) --header-file=$@ $(LFLAGS) $<
