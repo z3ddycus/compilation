@@ -1,0 +1,25 @@
+\begin{thebibliography}{1}
+
+\bibitem{BM:2015}
+Nicolas Bedon, Arnaud Lefebvre, and Ludovic Mignot.
+\newblock Mybib: utilitaire de manipulation de {\BibTeX}, November 2015.
+\newblock Projet de compilation, $1^\text{ère}$ année du Master
+  d'informatique de l'Université de Rouen, année universitaire 2015--16.
+
+\bibitem{Fenn:2006}
+J{\"u}rgen Fenn.
+\newblock Managing citations and your bibliography with {\BibTeX}.
+\newblock {\em The Prac\TeX\ journal}, (4), 2006.
+
+\bibitem{Knuth:1986}
+Donald~E. Knuth.
+\newblock {\em The \TeX{book}}.
+\newblock Addison-Wesley, 1986.
+
+\bibitem{Lamport:1994}
+Leslie Lamport.
+\newblock {\em {\LaTeX}: A document preparation system: User's guide and
+  reference}.
+\newblock Addison-Wesley, 1994.
+
+\end{thebibliography}

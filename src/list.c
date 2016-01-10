@@ -87,10 +87,20 @@ void* getList(List l, void* element) {
  * Insert element in List
  */
 void insertList(List l, void* element) {
-	CellList newCell = malloc(sizeof(*newCell));
-	newCell->value = element;
-	newCell->next = l->head;
-	l->head = newCell;
+    CellList newCell = malloc(sizeof(*newCell));
+    newCell->value = element;
+    newCell->next = NULL;
+    
+    CellList pt = l->head;
+    if (pt == NULL) {
+        l->head = newCell;
+    } else {
+        while (pt->next != NULL) {
+            pt = pt->next;
+        }
+        pt->next = newCell;
+    }
+
 	++l->size;
 }
 
@@ -114,6 +124,21 @@ void* removeList(List l, void* element) {
 		}
 	}
 	return NULL;
+}
+
+/**
+ * Remove first element of list.
+ */
+void* popList(List l) {
+    if (l->size != 0) {
+        CellList head = l->head;
+        l->head = l->head->next;
+        void* result = head->value;
+        free(head);
+        --l->size;
+        return result;
+    }
+    return NULL;
 }
 
 /**

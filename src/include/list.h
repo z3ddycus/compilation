@@ -52,6 +52,11 @@ void insertList(List l, void* element);
 void* removeList(List l, void* element);
 
 /**
+ * Remove first element of list.
+ */
+void* popList(List l);
+
+/**
  * Clear List
  */
 void clearList(List l);

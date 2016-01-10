@@ -3,54 +3,76 @@
 #include <stdlib.h>
 #include <string.h>
 #include "include/global.h"
-#include "include/sorted_set.h"
-#include "include/list.h"
 #include "mybib.tab.h"
 
-SortedSet keys;
-List files;
-char* bibName;
+char* filePrefix;
 %}
 CITE \\cite\{[^\}]+\}
 NOCITE \\nocite\{[^\}]+\}
 BIBNAME \\bibliography\{[^\}]+\}
 INCLUDE \\include\{[^\}]+\}
+INPUT \\input\{[^\}]+\}
 CARAC .|\n
+
+%s latex
+%s bibtex
 %%
-{CITE} {
+<latex>{CITE} {
     const size_t size = yyleng - 7;
     char* key = malloc(size + 1);
     memcpy(key, &yytext[6], size);
     key[size] = '\0';
-    insertSortedSet(keys, key);
     yylval.val = key;
     return CITE;
 }
 
-{NOCITE} {
+<latex>{NOCITE} {
     const size_t size = yyleng - 9;
     char* key = malloc(size + 1);
     memcpy(key, &yytext[8], size);
     key[size] = '\0';
-    insertSortedSet(keys, key);
     yylval.val = key;
     return NOCITE;
 }
 
-{BIBNAME} {
-    const size_t size = yyleng - 15;
-    bibName = malloc(size + 1);
-    memcpy(bibName, &yytext[14], size);
-    bibName[size] = '\0';
-    printf("%s\n", bibName);
+<latex>{BIBNAME} {
+    const size_t size = yyleng - 11;
+    char* file = malloc(size + 1);
+    file = malloc(size + 1);
+    memcpy(file, &yytext[14], size - 4);
+    file[size - 4] = '.';
+    file[size - 3] = 'b';
+    file[size - 2] = 'i';
+    file[size - 1] = 'b';
+    file[size] = '\0';
+    yylval.val = file;
+    return BIBNAME;
 }
 
-{INCLUDE} {
-    const size_t size = yyleng - 10;
+<latex>{INCLUDE} {
+    const size_t size = yyleng - 6;
     char* file = malloc(size + 1);
-    memcpy(file, &yytext[9], size);
+    memcpy(file, &yytext[9], size - 4);
+    file[size - 4] = '.';
+    file[size - 3] = 't';
+    file[size - 2] = 'e';
+    file[size - 1] = 'x';
     file[size] = '\0';
-    insertList(files, file);
+    yylval.val = file;
+    return INCLUDE;
+}
+
+<latex>{INPUT} {
+    const size_t size = yyleng - 4;
+    char* file = malloc(size + 1);
+    memcpy(file, &yytext[9], size - 4);
+    file[size - 4] = '.';
+    file[size - 3] = 't';
+    file[size - 2] = 'e';
+    file[size - 1] = 'x';
+    file[size] = '\0';
+    yylval.val = file;
+    return INPUT;
 }
 
 {CARAC} {
@@ -58,6 +80,22 @@ CARAC .|\n
     return CARAC;
 }
 %%
+int yywrap(void) {
+    if (lengthList(texFiles) > 0) {
+        char* file = popList(texFiles);
+        char* s = malloc(strlen(filePrefix) + strlen(file) + 1);
+        sprintf(s, "%s%s", filePrefix, file);
+        fclose(yyin);
+        yyin = fopen(s, "r");
+        if (yyin == NULL) {
+            fprintf(stderr, "erreur");
+            exit(0);
+        }
+        return 0;
+    }
+    return 1;
+}
+
 int main(int argc, char** argv) {
     /**
     -b 1 arg  : genere un bibtex a partir d'un .tex
@@ -75,20 +113,34 @@ int main(int argc, char** argv) {
         yyin = stdin;
     }
 
+    // Calcul du prefixe
+    char* p = strchr(argv[1], '/');
+    if (p != NULL) {
+        size_t size = p - argv[1] + 1;
+        filePrefix = malloc(size + 1);
+        memcpy(filePrefix, argv[1], size);
+        filePrefix[size] = '\0';
+        printf("Pref : %s\n", filePrefix);
+    } else {
+        filePrefix = malloc(1);
+        filePrefix[0] = '\0';
+    }
+
     refManager = newRefManager();
 
     keys = newSortedSet((int (*) (void*, void*)) strcmp);
-    files = newList((int (*) (void*, void*)) strcmp);
+    texFiles = newList((int (*) (void*, void*)) strcmp);
+    bibFiles = newList((int (*) (void*, void*)) strcmp);
 
+
+    BEGIN(latex);
     yyparse();
 
-    // Parcours des include.
-    initIteratorList(files);
-    while (hasNextList(files)) {
-        yyin = fopen(nextList(files), "r");
-        yyparse();
+    initIteratorSortedSet(keys);
+    while (hasNextSortedSet(keys)) {
+        printf("Clé finale : %s\n", (char*) nextSortedSet(keys));
     }
 
-    // Passage sur le .bib.
-
+    // Passage sur les .bib.
+    BEGIN(bibtex);
 }

@@ -1,6 +1,8 @@
 %{
     #include <stdio.h>
     #include <stdlib.h>
+    #include "include/global.h"
+    
     void yyerror(const char *s);
     int yylex();
 %}
@@ -8,20 +10,31 @@
     char* val;
     char carac;
 }
-%token <val> CITE NOCITE INCLUDE
+%token <val> CITE NOCITE INCLUDE INPUT BIBNAME
 %token <carac> CARAC
 %left CARAC
 %left CITE
 %left NOCITE
+%left INCLUDE
+%left INPUT
+%left BIBNAME
 %%
 
-file : text
+file : latex
 ;
 
-text : text CITE text {printf("%s\n", $2);}
-    | text NOCITE text {printf("%s\n", $2);}
-    | text CARAC text
-    | CARAC
+latex : CITE {printf("Clé : %s\n", $1); insertSortedSet(keys, $1);} latex
+    | NOCITE {printf("Clé : %s\n", $1); insertSortedSet(keys, $1);} latex
+| INCLUDE {
+    printf("Texte trouvé : %s\n", $1);
+    insertList(texFiles, $1);
+} latex
+| INPUT {
+    printf("Texte trouvé : %s\n", $1);
+    insertList(texFiles, $1);
+} latex
+    | BIBNAME {printf("Bibname : %s\n", $1); insertList(bibFiles, $1);} latex
+    | CARAC latex
     |
 ;
 

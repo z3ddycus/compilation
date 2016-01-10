@@ -48,7 +48,9 @@ extern int yydebug;
     CITE = 258,
     NOCITE = 259,
     INCLUDE = 260,
-    CARAC = 261
+    INPUT = 261,
+    BIBNAME = 262,
+    CARAC = 263
   };
 #endif
 
@@ -57,12 +59,12 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 7 "src/mybib.y" /* yacc.c:1909  */
+#line 9 "src/mybib.y" /* yacc.c:1909  */
 
     char* val;
     char carac;
 
-#line 66 "src/mybib.tab.h" /* yacc.c:1909  */
+#line 68 "src/mybib.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

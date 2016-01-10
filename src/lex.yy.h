@@ -221,6 +221,8 @@ extern char *yytext;
 
 #ifdef YY_HEADER_EXPORT_START_CONDITIONS
 #define INITIAL 0
+#define latex 1
+#define bibtex 2
 
 #endif
 
@@ -329,15 +331,13 @@ extern int yylex (void);
 #undef YY_DECL
 #endif
 
-#line 60 "src/mybib.lex"
+#line 82 "src/mybib.lex"
 
 
-#line 336 "src/lex.yy.h"
+#line 338 "src/lex.yy.h"
 #undef yyIN_HEADER
 #endif /* yyHEADER_H */
- use only.
- */
-#define YY_CURRENT_BUFFER_LVALUE (yy_buffer_stack)[(yy_buffer_stack_top)]
+_BUFFER_LVALUE (yy_buffer_stack)[(yy_buffer_stack_top)]
 
 /* yy_hold_char holds the character lost when yytext is formed. */
 static char yy_hold_char;
@@ -436,8 +436,8 @@ static void yy_fatal_error (yyconst char msg[]  );
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
 
-#define YY_NUM_RULES 6
-#define YY_END_OF_BUFFER 7
+#define YY_NUM_RULES 7
+#define YY_END_OF_BUFFER 8
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -445,12 +445,13 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static yyconst flex_int16_t yy_accept[48] =
+static yyconst flex_int16_t yy_accept[58] =
     {   0,
-        0,    0,    7,    5,    5,    0,    0,    0,    0,    0,
+        0,    0,    0,    0,    0,    0,    8,    6,    6,    0,
         0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
         0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-        1,    0,    0,    0,    0,    0,    0,    0,    2,    0,
+        0,    0,    0,    0,    0,    0,    0,    0,    1,    0,
+        0,    0,    0,    0,    5,    0,    0,    0,    2,    0,
         4,    0,    0,    0,    0,    3,    0
     } ;
 
@@ -493,48 +494,52 @@ static yyconst YY_CHAR yy_meta[22] =
         2
     } ;
 
-static yyconst flex_uint16_t yy_base[53] =
+static yyconst flex_uint16_t yy_base[64] =
     {   0,
-       53,   52,   54,   57,    0,   42,   41,   38,   36,   44,
-       31,   41,   40,   33,   36,   31,   31,   30,   20,   21,
-       21,   23,    0,   29,   27,   25,   12,   24,   11,   14,
-       57,    9,    0,   24,    0,    6,   11,    4,   57,   14,
-       57,    4,    2,    0,    0,   57,   57,   13,    3,    2,
-        1,    0
+        0,    0,   56,   55,    0,    0,   57,   60,    0,   45,
+       44,   41,   39,   47,   34,    1,   44,   37,   40,   35,
+       28,   34,   33,   23,   24,   24,   23,   25,    0,   31,
+       17,   28,   26,   13,   25,    0,   12,   15,   60,   10,
+        8,    0,   24,    0,   60,    6,   11,    4,   60,   14,
+       60,    4,    2,    0,    0,   60,   60,   16,    7,    3,
+        2,    1,    0
     } ;
 
-static yyconst flex_int16_t yy_def[53] =
+static yyconst flex_int16_t yy_def[64] =
     {   0,
-       48,   48,   47,   47,   47,   47,   47,   47,   47,   47,
-       47,   47,   47,   47,   47,   47,   47,   47,   47,   47,
-       47,   47,   49,   47,   47,   47,   49,   47,   47,   47,
-       47,   47,   50,   47,   51,   50,   47,   51,   47,   47,
-       47,   47,   47,   52,   52,   47,    0,   47,   47,   47,
-       47,   47
+       58,   58,   58,   58,   58,   58,   57,   57,   57,   57,
+       57,   57,   57,   57,   57,   57,   57,   57,   57,   57,
+       57,   57,   57,   57,   57,   57,   57,   57,   59,   57,
+       57,   57,   57,   59,   57,   60,   57,   57,   57,   57,
+       60,   61,   57,   62,   57,   61,   57,   62,   57,   57,
+       57,   57,   57,   63,   63,   57,    0,   57,   57,   57,
+       57,   57,   57
     } ;
 
-static yyconst flex_uint16_t yy_nxt[79] =
+static yyconst flex_uint16_t yy_nxt[82] =
     {   0,
-       45,   38,   36,   27,    6,    7,   47,   47,   47,   47,
-        8,   47,    9,    4,    4,   47,   47,   47,   47,   47,
-       46,   44,   43,   42,   41,   40,   39,   37,   35,   34,
-       33,   32,   31,   30,   29,   28,   26,   25,   24,   23,
-       22,   21,   20,   19,   18,   17,   16,   15,   14,   13,
-       12,   11,   10,   47,    5,    5,    3,   47,   47,   47,
-       47,   47,   47,   47,   47,   47,   47,   47,   47,   47,
-       47,   47,   47,   47,   47,   47,   47,   47
+       55,   48,   46,   41,   10,   11,   20,   34,   57,   57,
+       12,   57,   13,   57,   57,   21,    8,    8,   57,   57,
+       56,   54,   53,   52,   51,   50,   49,   47,   45,   44,
+       43,   42,   40,   39,   38,   37,   36,   35,   33,   32,
+       31,   30,   29,   28,   27,   26,   25,   24,   23,   22,
+       19,   18,   17,   16,   15,   14,   57,    9,    9,    7,
+       57,   57,   57,   57,   57,   57,   57,   57,   57,   57,
+       57,   57,   57,   57,   57,   57,   57,   57,   57,   57,
+       57
     } ;
 
-static yyconst flex_int16_t yy_chk[79] =
+static yyconst flex_int16_t yy_chk[82] =
     {   0,
-       52,   51,   50,   49,    5,    5,    0,    0,    0,    0,
-        5,    0,    5,   48,   48,    0,    0,    0,    0,    0,
-       45,   43,   42,   40,   38,   37,   36,   34,   32,   30,
-       29,   28,   27,   26,   25,   24,   22,   21,   20,   19,
-       18,   17,   16,   15,   14,   13,   12,   11,   10,    9,
-        8,    7,    6,    3,    2,    1,   47,   47,   47,   47,
-       47,   47,   47,   47,   47,   47,   47,   47,   47,   47,
-       47,   47,   47,   47,   47,   47,   47,   47
+       63,   62,   61,   60,    9,    9,   16,   59,    0,    0,
+        9,    0,    9,    0,    0,   16,   58,   58,    0,    0,
+       55,   53,   52,   50,   48,   47,   46,   43,   41,   40,
+       38,   37,   35,   34,   33,   32,   31,   30,   28,   27,
+       26,   25,   24,   23,   22,   21,   20,   19,   18,   17,
+       15,   14,   13,   12,   11,   10,    7,    4,    3,   57,
+       57,   57,   57,   57,   57,   57,   57,   57,   57,   57,
+       57,   57,   57,   57,   57,   57,   57,   57,   57,   57,
+       57
     } ;
 
 static yy_state_type yy_last_accepting_state;
@@ -557,16 +562,16 @@ char *yytext;
 #include <stdlib.h>
 #include <string.h>
 #include "include/global.h"
-#include "include/sorted_set.h"
-#include "include/list.h"
 #include "mybib.tab.h"
 
-SortedSet keys;
-List files;
-char* bibName;
-#line 510 "src/lex.yy.h"
+char* filePrefix;
+
+
+#line 513 "src/lex.yy.h"
 
 #define INITIAL 0
+#define latex 1
+#define bibtex 2
 
 #ifndef YY_NO_UNISTD_H
 /* Special case for "unistd.h", since it is non-ANSI. We include it way
@@ -782,7 +787,7 @@ YY_DECL
 	{
 #line 19 "src/mybib.lex"
 
-#line 728 "src/lex.yy.h"
+#line 733 "src/lex.yy.h"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -809,13 +814,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 48 )
+				if ( yy_current_state >= 58 )
 					yy_c = yy_meta[(unsigned int) yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 57 );
+		while ( yy_base[yy_current_state] != 60 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -848,7 +853,6 @@ YY_RULE_SETUP
     char* key = malloc(size + 1);
     memcpy(key, &yytext[6], size);
     key[size] = '\0';
-    insertSortedSet(keys, key);
     yylval.val = key;
     return CITE;
 }
@@ -856,13 +860,12 @@ YY_RULE_SETUP
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 30 "src/mybib.lex"
+#line 29 "src/mybib.lex"
 {
     const size_t size = yyleng - 9;
     char* key = malloc(size + 1);
     memcpy(key, &yytext[8], size);
     key[size] = '\0';
-    insertSortedSet(keys, key);
     yylval.val = key;
     return NOCITE;
 }
@@ -870,43 +873,73 @@ YY_RULE_SETUP
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 40 "src/mybib.lex"
+#line 38 "src/mybib.lex"
 {
-    const size_t size = yyleng - 15;
-    bibName = malloc(size + 1);
-    memcpy(bibName, &yytext[14], size);
-    bibName[size] = '\0';
-    printf("%s\n", bibName);
+    const size_t size = yyleng - 11;
+    char* file = malloc(size + 1);
+    file = malloc(size + 1);
+    memcpy(file, &yytext[14], size - 4);
+    file[size - 4] = '.';
+    file[size - 3] = 'b';
+    file[size - 2] = 'i';
+    file[size - 1] = 'b';
+    file[size] = '\0';
+    yylval.val = file;
+    return BIBNAME;
 }
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 48 "src/mybib.lex"
+#line 52 "src/mybib.lex"
 {
-    const size_t size = yyleng - 10;
+    const size_t size = yyleng - 6;
     char* file = malloc(size + 1);
-    memcpy(file, &yytext[9], size);
+    memcpy(file, &yytext[9], size - 4);
+    file[size - 4] = '.';
+    file[size - 3] = 't';
+    file[size - 2] = 'e';
+    file[size - 1] = 'x';
     file[size] = '\0';
-    insertList(files, file);
+    yylval.val = file;
+    return INCLUDE;
 }
 	YY_BREAK
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
-#line 56 "src/mybib.lex"
+#line 65 "src/mybib.lex"
+{
+    const size_t size = yyleng - 4;
+    char* file = malloc(size + 1);
+    memcpy(file, &yytext[9], size - 4);
+    file[size - 4] = '.';
+    file[size - 3] = 't';
+    file[size - 2] = 'e';
+    file[size - 1] = 'x';
+    file[size] = '\0';
+    yylval.val = file;
+    return INPUT;
+}
+	YY_BREAK
+case 6:
+/* rule 6 can match eol */
+YY_RULE_SETUP
+#line 78 "src/mybib.lex"
 {
     yylval.carac = yytext[0];
     return CARAC;
 }
 	YY_BREAK
-case 6:
+case 7:
 YY_RULE_SETUP
-#line 60 "src/mybib.lex"
+#line 82 "src/mybib.lex"
 ECHO;
 	YY_BREAK
-#line 851 "src/lex.yy.h"
+#line 882 "src/lex.yy.h"
 case YY_STATE_EOF(INITIAL):
+case YY_STATE_EOF(latex):
+case YY_STATE_EOF(bibtex):
 	yyterminate();
 
 	case YY_END_OF_BUFFER:
@@ -1198,7 +1231,7 @@ static int yy_get_next_buffer (void)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 48 )
+			if ( yy_current_state >= 58 )
 				yy_c = yy_meta[(unsigned int) yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
@@ -1226,11 +1259,11 @@ static int yy_get_next_buffer (void)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 48 )
+		if ( yy_current_state >= 58 )
 			yy_c = yy_meta[(unsigned int) yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
-	yy_is_jam = (yy_current_state == 47);
+	yy_is_jam = (yy_current_state == 57);
 
 		return yy_is_jam ? 0 : yy_current_state;
 }
@@ -1869,8 +1902,24 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 60 "src/mybib.lex"
+#line 82 "src/mybib.lex"
 
+
+int yywrap(void) {
+    if (lengthList(texFiles) > 0) {
+        char* file = popList(texFiles);
+        char* s = malloc(strlen(filePrefix) + strlen(file) + 1);
+        sprintf(s, "%s%s", filePrefix, file);
+        fclose(yyin);
+        yyin = fopen(s, "r");
+        if (yyin == NULL) {
+            fprintf(stderr, "erreur");
+            exit(0);
+        }
+        return 0;
+    }
+    return 1;
+}
 
 int main(int argc, char** argv) {
     /**
@@ -1889,21 +1938,35 @@ int main(int argc, char** argv) {
         yyin = stdin;
     }
 
+    // Calcul du prefixe
+    char* p = strchr(argv[1], '/');
+    if (p != NULL) {
+        size_t size = p - argv[1] + 1;
+        filePrefix = malloc(size + 1);
+        memcpy(filePrefix, argv[1], size);
+        filePrefix[size] = '\0';
+        printf("Pref : %s\n", filePrefix);
+    } else {
+        filePrefix = malloc(1);
+        filePrefix[0] = '\0';
+    }
+
     refManager = newRefManager();
 
     keys = newSortedSet((int (*) (void*, void*)) strcmp);
-    files = newList((int (*) (void*, void*)) strcmp);
+    texFiles = newList((int (*) (void*, void*)) strcmp);
+    bibFiles = newList((int (*) (void*, void*)) strcmp);
 
+
+    BEGIN(latex);
     yyparse();
 
-    // Parcours des include.
-    initIteratorList(files);
-    while (hasNextList(files)) {
-        yyin = fopen(nextList(files), "r");
-        yyparse();
+    initIteratorSortedSet(keys);
+    while (hasNextSortedSet(keys)) {
+        printf("Clé finale : %s\n", (char*) nextSortedSet(keys));
     }
 
-    // Passage sur le .bib.
-
+    // Passage sur les .bib.
+    BEGIN(bibtex);
 }
 
