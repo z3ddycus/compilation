@@ -15,7 +15,7 @@ INPUT \\input\{[^\}]+\}
 
 TYPEREF @Article|@Book|@Booklet|@Conference|@Inbook|@Incollection|@Inproceedings|@Manual|@Mastersthesis|@Misc|@Phdthesis|@Proceedings|@Techreport|@Unpublished
 TYPECHAMP address|abstract|annote|author|booktitle|chapter|crossref|edition|editor|eprint|howpublished|institution|isbn|journal|key|month|note|number|organization|pages|publisher|school|series|title|type|url|volume|year
-KEY [^,|\n|@|{|}|\ ]+:[^,|\n|@|{|}|\ ]+,
+KEY [a-zA-Z0-9]+(:[a-zA-Z0-9])*
 
 CARAC [^\ ]
 

@@ -18,26 +18,11 @@
 %left KEY
 %%
 
-file : randomThing file
-    | TYPEREF {printf("Type : %s\n", $1);} bloc file
-    | {printf("r3\n");}
-;
-
-bloc : {printf("r4\n");} '{' KEY '\n' enumChamps '}'
-;
-
-enumChamps: {printf("r5\n");} champ ',' '\n' enumChamps
-    | {printf("r6\n");} champ '\n'
-;
-
-champ: {printf("r7\n");} TYPECHAMP {printf("Champ : %s\n", $2);} '=' '{' phrase '}'
-;
-
-phrase: {printf("r8\n");} CARAC phrase
+file : TYPEREF '{' KEY ',' '\n' ' '' 'cleValeur
     |
-;
 
-randomThing: CARAC {printf("Carac : %c\n", $1);} | ',' | '=' | '\n';
+cleValeur : TYPECHAMP '=' '{' CARAC '}' '\n' '}' file
+    | TYPECHAMP '=' '{' CARAC '}' ',' ' ' \n' ' '' 'cleValeur
 
 %%
 void yyerror(const char *s) {
