@@ -82,5 +82,17 @@ void setReference(Reference ref, ChampReference champ, char* s);
  */
 char* referenceToString(Reference ref);
 
+/**
+ * Concatene the information non empty contained in source in target
+ * if target is NULL a new reference is allocated and initilize with 
+ * information from the source
+ * Return target
+ */
+Reference updateReference(Reference target, Reference source);
+
+/**
+ * Return a copy of source
+ */
+Reference copyReference(Reference source);
 #endif
 

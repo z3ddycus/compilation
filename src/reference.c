@@ -54,6 +54,9 @@ char* champReferenceArray[NB_CHAMP_REF] = {
 	"volume",
 	"year"
 };
+void deleteSpaceSuffixe(char* s);
+char* stringAfterSpace(char* s);
+
 
 Reference newReference(TypeReference type, char* id) {
 		size_t taille = strlen(id);
@@ -460,3 +463,46 @@ char* referenceToString(Reference ref) {
 	return result;
 }
 
+Reference updateReference(Reference target, Reference source) {
+	if (source != NULL) {
+		if (target == NULL) {
+			target = newReference(source->type, source->id);
+		}
+		for (int k = 0; k < NB_CHAMP_REF; ++k) {
+			char* c = source->champs[k];
+			if (c != NULL) {
+				c = stringAfterSpace(c);
+				deleteSpaceSuffixe(c);
+				if (strlen(c) > 0) {
+					setReference(target, k, c);
+				}
+			}
+		}
+	}
+	return target;
+}
+
+Reference copyReference(Reference source) {
+	return updateReference(NULL, source);
+}
+
+void deleteSpaceSuffixe(char* s) {
+	if (s != NULL) {
+		size_t taille = strlen(s);
+		for (int k = taille -1; k >= 0 && s[k] == ' '; --k) {
+			s[k] = 0;
+		}
+	}
+}
+
+char* stringAfterSpace(char* s) {
+	if (s != NULL) {
+		size_t taille = strlen(s);
+		char* result = s;
+		for (int k = 0; k < taille && s[k] == ' '; ++k) {
+			++result;
+		}
+		return result;
+	}
+	return NULL;
+}
