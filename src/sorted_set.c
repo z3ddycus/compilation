@@ -24,7 +24,7 @@ struct _set {
 /**
  * Create and allocate a new empty SortieSet.
  */
-SortedSet newSet(int (* compar)(void*,void*)) {
+SortedSet newSortedSet(int (* compar)(void*,void*)) {
 	SortedSet result = malloc(sizeof(*result));
 	result->compar = compar;
 	result->size = 0;
@@ -38,8 +38,8 @@ SortedSet newSet(int (* compar)(void*,void*)) {
 /**
  * Free the memory allocated from the SortedSet.
  */
-void deleteSet(SortedSet* l) {
-	clearSet(*l);
+void deleteSortedSet(SortedSet* l) {
+	clearSortedSet(*l);
 	free(*l);
 	*l = NULL;
 }
@@ -49,21 +49,21 @@ void deleteSet(SortedSet* l) {
 /**
  * Test if the SortedSet contains the key
  */
-int containsSet(SortedSet l, void* element) {
-	return getSet(l, element) != NULL;
+int containsSortedSet(SortedSet l, void* element) {
+	return getSortedSet(l, element) != NULL;
 }
  
 /**
  * Get SortedSet's length
  */
-size_t lengthSet(SortedSet l) {
+size_t lengthSortedSet(SortedSet l) {
 	return l->size;
 }
 
 /**
  * Get element in SortedSet
  */
-void* getSet(SortedSet l, void* element) {
+void* getSortedSet(SortedSet l, void* element) {
 	if (l->cur != NULL && l->compar(l->cur->value, element)) 
 	{
 		return l->cur->value;
@@ -103,8 +103,8 @@ void* getSet(SortedSet l, void* element) {
 /**
  * Insert element in SortedSet
  */
-void insertSet(SortedSet l, void* element) {
-	if (containsSet(l, element)) 
+void insertSortedSet(SortedSet l, void* element) {
+	if (containsSortedSet(l, element))
 	{
 		l->cur->value = element;
 	} 
@@ -144,8 +144,8 @@ void insertSet(SortedSet l, void* element) {
 /**
  * Remove element in SortedSet
  */
-void* removeSet(SortedSet l, void* element) {
-	if (containsSet(l, element)) 
+void* removeSortedSet(SortedSet l, void* element) {
+	if (containsSortedSet(l, element))
 	{
 		l->iterator = NULL;
 		--l->size;
@@ -160,7 +160,7 @@ void* removeSet(SortedSet l, void* element) {
 /**
  * Clear SortedSet
  */
-void clearSet(SortedSet l) {
+void clearSortedSet(SortedSet l) {
 	l->iterator = NULL;
 	l->size = 0;
 	while(l->head != NULL) {
@@ -176,21 +176,21 @@ void clearSet(SortedSet l) {
 /**
  * Initialize the iterator
  */
-void initIteratorSet(SortedSet l) {
+void initIteratorSortedSet(SortedSet l) {
 	l->iterator = l->head;
 }
 
 /**
  * Test if there is a next element
  */
-int hasNextSet(SortedSet l) {
+int hasNextSortedSet(SortedSet l) {
 	return l->iterator != NULL;
 }
 
 /**
  * Return the next element
  */
-void* nextSet(SortedSet l) {
+void* nextSortedSet(SortedSet l) {
 	if (l->iterator == NULL) {
 		fprintf(stderr, "the iterator don't have a next element");
 	}

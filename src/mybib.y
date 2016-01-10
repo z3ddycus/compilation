@@ -4,34 +4,27 @@
     void yyerror(const char *s);
     int yylex();
 %}
-
-%token NUMBER TOKHEAT STATE TOKTARGET TOKTEMPERATURE
-
+%union{
+    char* val;
+    char carac;
+}
+%token <val> CITE NOCITE INCLUDE
+%token <carac> CARAC
+%left CARAC
+%left CITE
+%left NOCITE
 %%
 
-commands: /* empty */
-| commands command
+file : text
 ;
 
-command:
-heat_switch
-|
-target_set
+text : text CITE text {printf("%s\n", $2);}
+    | text NOCITE text {printf("%s\n", $2);}
+    | text CARAC text
+    | CARAC
+    |
 ;
 
-heat_switch:
-TOKHEAT STATE
-{
-    printf("\tHeat turned on or off\n");
-}
-;
-
-target_set:
-TOKTARGET TOKTEMPERATURE NUMBER
-{
-    printf("\tTemperature set\n");
-}
-;
 %%
 void yyerror(const char *s) {
     fprintf(stderr,"%s\n", s);

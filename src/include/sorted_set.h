@@ -15,64 +15,64 @@ typedef struct _set *SortedSet;
 /**
  * Create and allocate a new empty SortieSet.
  */
-SortedSet newSet(int (* compar)(void*,void*));
+SortedSet newSortedSet(int (* compar)(void*,void*));
 
 
 // FREE
 /**
  * Free the memory allocated from the SortedSet.
  */
-void deleteSet(SortedSet* l);
+void deleteSortedSet(SortedSet* l);
 
 // GETTERS
 
 /**
  * Test if the SortedSet contains the key
  */
-int containsSet(SortedSet l, void* element); 
+int containsSortedSet(SortedSet l, void* element);
  
 /**
  * Get SortedSet's length
  */
-size_t lengthSet(SortedSet l);
+size_t lengthSortedSet(SortedSet l);
 
 /**
  * Get element in SortedSet
  */
-void* getSet(SortedSet l, void* element);
+void* getSortedSet(SortedSet l, void* element);
 
 // SETTERS
 
 /**
  * Insert element in SortedSet
  */
-void insertSet(SortedSet l, void* element);
+void insertSortedSet(SortedSet l, void* element);
 
 /**
  * Remove element in SortedSet
  */
-void* removeSet(SortedSet l, void* element);
+void* removeSortedSet(SortedSet l, void* element);
 
 /**
  * Clear SortedSet
  */
-void clearSet(SortedSet l);
+void clearSortedSet(SortedSet l);
 
 // ITERATOR
 
 /**
  * Initialize the iterator
  */
-void initIteratorSet(SortedSet l);
+void initIteratorSortedSet(SortedSet l);
 
 /**
  * Test if there is a next element
  */
-int hasNextSet(SortedSet l);
+int hasNextSortedSet(SortedSet l);
 
 /**
  * Return the next element
  */
-void* nextSet(SortedSet l);
+void* nextSortedSet(SortedSet l);
 
 #endif // SORTED_SET_H

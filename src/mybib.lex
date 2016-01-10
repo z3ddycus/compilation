@@ -2,11 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "mybib.tab.h"
+#include "include/global.h"
 #include "include/sorted_set.h"
 #include "include/list.h"
-#include "include/mybib.tab.h"
-%}
+#include "mybib.tab.h"
 
 SortedSet keys;
 List files;
@@ -16,13 +15,16 @@ CITE \\cite\{[^\}]+\}
 NOCITE \\nocite\{[^\}]+\}
 BIBNAME \\bibliography\{[^\}]+\}
 INCLUDE \\include\{[^\}]+\}
+CARAC .|\n
 %%
 {CITE} {
     const size_t size = yyleng - 7;
     char* key = malloc(size + 1);
     memcpy(key, &yytext[6], size);
     key[size] = '\0';
-    insertSet(keys, key);
+    insertSortedSet(keys, key);
+    yylval.val = key;
+    return CITE;
 }
 
 {NOCITE} {
@@ -30,7 +32,9 @@ INCLUDE \\include\{[^\}]+\}
     char* key = malloc(size + 1);
     memcpy(key, &yytext[8], size);
     key[size] = '\0';
-    insertSet(keys, key);
+    insertSortedSet(keys, key);
+    yylval.val = key;
+    return NOCITE;
 }
 
 {BIBNAME} {
@@ -49,7 +53,10 @@ INCLUDE \\include\{[^\}]+\}
     insertList(files, file);
 }
 
-.|\n {}
+{CARAC} {
+    yylval.carac = yytext[0];
+    return CARAC;
+}
 %%
 int main(int argc, char** argv) {
     /**
@@ -68,15 +75,17 @@ int main(int argc, char** argv) {
         yyin = stdin;
     }
 
-    keys = newSet((int (*) (void*, void*)) strcmp);
+    refManager = newRefManager();
+
+    keys = newSortedSet((int (*) (void*, void*)) strcmp);
     files = newList((int (*) (void*, void*)) strcmp);
 
     yyparse();
 
     // Parcours des include.
     initIteratorList(files);
-    while (hasNextSet(files)) {
-        yyin = fopen(nextSet(files), "r");
+    while (hasNextList(files)) {
+        yyin = fopen(nextList(files), "r");
         yyparse();
     }
 
