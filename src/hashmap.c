@@ -107,10 +107,10 @@ void* removeHashMap(HashMap map, void* key) {
 /**
  * Clear the map
  */
-void clearHashMap(HashMap* map) {
-	(*map)->iterator = SIZE_HASHMAP;
+void clearHashMap(HashMap map) {
+	map->iterator = SIZE_HASHMAP;
 	for(int k = 0; k < SIZE_HASHMAP; ++k) {
-		clearMap((*map)->lists[k]);
+		clearMap(map->lists[k]);
 	}
 }
 

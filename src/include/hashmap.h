@@ -47,7 +47,7 @@ void* removeHashMap(HashMap map, void* key);
 /**
  * Clear the map
  */
-void clearHashMap(HashMap* map);
+void clearHashMap(HashMap map);
 
 // ITERATOR
 
