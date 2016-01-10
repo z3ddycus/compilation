@@ -54,8 +54,8 @@ size_t sizeRefManager(RefManager manager) {
 /**
  * Set or replace the value for the key
  */
-void setRefManager(RefManager manager, char* id, Reference ref) {
-	setHashMap(manager->map, id, ref);
+void setRefManager(RefManager manager, Reference ref) {
+	setHashMap(manager->map, ref->id, ref);
 }
 
 /**

@@ -5,11 +5,7 @@
 
 #define SIZE_BUFFER_REFERENCE 1000000
 
-struct _ref{
-		TypeReference type;
-		char* id;
-		char* champs[NB_CHAMP_REF];
-};
+
 
 char* typeReferenceArray[NB_TYPE_REF] = {
 	"article",
@@ -74,14 +70,14 @@ Reference newReference(TypeReference type, char* id) {
 		return result;
 }
 
-Reference deleteReference(Reference* ref) {
+void deleteReference(Reference* ref) {
 	for (int k = 0; k < NB_CHAMP_REF; ++k) {
-		if ((*result)->champs[k] != NULL) {
-			free((*result)->champs[k]);
+		if ((*ref)->champs[k] != NULL) {
+			free((*ref)->champs[k]);
 		}
 	}
-	free(*result);
-	*result = NULL;
+	free(*ref);
+	*ref = NULL;
 }
 
 void setReference(Reference ref, ChampReference champ, char* s) {

@@ -53,6 +53,13 @@ enum _typeChamp {
 
 typedef enum _typeChamp ChampReference;
 typedef enum _typeRef TypeReference;
+
+struct _ref{
+		TypeReference type;
+		char* id;
+		char* champs[NB_CHAMP_REF];
+};
+
 typedef struct _ref* Reference;
 
 /**
@@ -63,7 +70,7 @@ Reference newReference(TypeReference type, char* id);
 /**
  * Delete a reference
  */
-Reference deleteReference(Reference* ref);
+void deleteReference(Reference* ref);
 
 /**
  * Set the champ with the value s
