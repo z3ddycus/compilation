@@ -68,6 +68,16 @@ typedef struct _ref* Reference;
 Reference newReference(TypeReference type, char* id);
 
 /**
+ * Return a Type corresponding to the string, ref_article by default.
+ */
+TypeReference getType(char* s);
+
+/**
+ * Return a Champ corresponding to the string, ref_author by default.
+ */
+ChampReference getChamp(char* s);
+
+/**
  * Delete a reference
  */
 void deleteReference(Reference* ref);

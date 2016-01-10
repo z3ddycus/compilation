@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <ctype.h>
 
 #define SIZE_BUFFER_REFERENCE 1000000
 
@@ -73,6 +74,44 @@ Reference newReference(TypeReference type, char* id) {
 		return result;
 }
 
+/**
+ * Return a Type corresponding to the string, ref_article by default.
+ */
+TypeReference getType(char* s) {
+    char str[strlen(s) + 1];
+    sprintf(str, "%s", s);
+    for (int i = 0; str[i]; i++) {
+        str[i] = tolower(str[i]);
+    }
+    
+    for (int i = 0; i < NB_TYPE_REF; ++i) {
+        if (strcmp(str, typeReferenceArray[i]) == 0) {
+            return i;
+        }
+    }
+    
+    return ref_article;
+}
+
+/**
+ * Return a Champ corresponding to the string, ref_author by default.
+ */
+ChampReference getChamp(char* s) {
+    char str[strlen(s) + 1];
+    sprintf(str, "%s", s);
+    for (int i = 0; str[i]; i++) {
+        str[i] = tolower(str[i]);
+    }
+    
+    for (int i = 0; i < NB_CHAMP_REF; ++i) {
+        if (strcmp(str, champReferenceArray[i]) == 0) {
+            return i;
+        }
+    }
+    
+    return ref_author;
+}
+
 void deleteReference(Reference* ref) {
 	for (int k = 0; k < NB_CHAMP_REF; ++k) {
 		if ((*ref)->champs[k] != NULL) {
@@ -84,7 +123,7 @@ void deleteReference(Reference* ref) {
 }
 
 void setReference(Reference ref, ChampReference champ, char* s) {
-	if (champ >= 0 && champ <= NB_CHAMP_REF) {
+	if (champ <= NB_CHAMP_REF) {
 		size_t length = strlen(s);
 		char* valeur = malloc((length + 1) * sizeof(*valeur));
 		strncpy(valeur, s, length);

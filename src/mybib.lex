@@ -12,7 +12,12 @@ NOCITE \\nocite\{[^\}]+\}
 BIBNAME \\bibliography\{[^\}]+\}
 INCLUDE \\include\{[^\}]+\}
 INPUT \\input\{[^\}]+\}
-CARAC .|\n
+
+TYPEREF @Article|@Book|@Booklet|@Conference|@Inbook|@Incollection|@Inproceedings|@Manual|@Mastersthesis|@Misc|@Phdthesis|@Proceedings|@Techreport|@Unpublished
+TYPECHAMP address|abstract|annote|author|booktitle|chapter|crossref|edition|editor|eprint|howpublished|institution|isbn|journal|key|month|note|number|organization|pages|publisher|school|series|title|type|url|volume|year
+KEY [^,|\n|@|{|}|\ ]+:[^,|\n|@|{|}|\ ]+,
+
+CARAC [^\ ]
 
 %s latex
 %s bibtex
@@ -22,8 +27,7 @@ CARAC .|\n
     char* key = malloc(size + 1);
     memcpy(key, &yytext[6], size);
     key[size] = '\0';
-    yylval.val = key;
-    return CITE;
+    insertSortedSet(keys, key);
 }
 
 <latex>{NOCITE} {
@@ -31,8 +35,7 @@ CARAC .|\n
     char* key = malloc(size + 1);
     memcpy(key, &yytext[8], size);
     key[size] = '\0';
-    yylval.val = key;
-    return NOCITE;
+    insertSortedSet(keys, key);
 }
 
 <latex>{BIBNAME} {
@@ -45,8 +48,7 @@ CARAC .|\n
     file[size - 2] = 'i';
     file[size - 1] = 'b';
     file[size] = '\0';
-    yylval.val = file;
-    return BIBNAME;
+    insertList(bibFiles, file);
 }
 
 <latex>{INCLUDE} {
@@ -58,8 +60,7 @@ CARAC .|\n
     file[size - 2] = 'e';
     file[size - 1] = 'x';
     file[size] = '\0';
-    yylval.val = file;
-    return INCLUDE;
+    insertList(texFiles, file);
 }
 
 <latex>{INPUT} {
@@ -71,14 +72,48 @@ CARAC .|\n
     file[size - 2] = 'e';
     file[size - 1] = 'x';
     file[size] = '\0';
-    yylval.val = file;
-    return INPUT;
+    insertList(texFiles, file);
 }
 
-{CARAC} {
+<bibtex>{TYPEREF} {
+    size_t size = strlen(yytext);
+    yylval.string = malloc(size);
+    memcpy(yylval.string, &yytext[1], size - 1);
+    yylval.string[size] = '\0';
+    printf("Ref : %s\n", yylval.string);
+    return TYPEREF;
+}
+
+<bibtex>{TYPECHAMP} {
+    printf("Champ : %s\n", yytext);
+    size_t size = strlen(yytext);
+    yylval.string = malloc(size + 1);
+    memcpy(yylval.string, &yytext[0], size);
+    yylval.string[size] = '\0';
+    return TYPECHAMP;
+}
+
+<bibtex>{KEY} {
+    size_t size = strlen(yytext) - 1;
+    yylval.string = malloc(size + 1);
+    memcpy(yylval.string, &yytext[0], size);
+    yylval.string[size] = '\0';
+    printf("Key : %s\n", yylval.string);
+    return KEY;
+}
+
+<bibtex>\{ return '{';
+<bibtex>\} return '}';
+<bibtex>\n return '\n';
+<bibtex>, return ',';
+<bibtex>= return '=';
+
+<bibtex>{CARAC} {
     yylval.carac = yytext[0];
     return CARAC;
 }
+
+.|\n {}
 %%
 int yywrap(void) {
     if (lengthList(texFiles) > 0) {
@@ -88,9 +123,26 @@ int yywrap(void) {
         fclose(yyin);
         yyin = fopen(s, "r");
         if (yyin == NULL) {
-            fprintf(stderr, "erreur");
+            fprintf(stderr, "Impossible d'ouvrir le fichier de nom %s.\n", file);
             exit(0);
         }
+
+        BEGIN(latex);
+        return 0;
+    }
+
+    if (lengthList(bibFiles) > 0) {
+        char* file = popList(bibFiles);
+        char* s = malloc(strlen(filePrefix) + strlen(file) + 1);
+        sprintf(s, "%s%s", filePrefix, file);
+        fclose(yyin);
+        yyin = fopen(s, "r");
+        if (yyin == NULL) {
+            fprintf(stderr, "Impossible d'ouvrir le fichier de nom %s.\n", file);
+            exit(0);
+        }
+
+        BEGIN(bibtex);
         return 0;
     }
     return 1;
@@ -135,12 +187,4 @@ int main(int argc, char** argv) {
 
     BEGIN(latex);
     yyparse();
-
-    initIteratorSortedSet(keys);
-    while (hasNextSortedSet(keys)) {
-        printf("Clé finale : %s\n", (char*) nextSortedSet(keys));
-    }
-
-    // Passage sur les .bib.
-    BEGIN(bibtex);
 }

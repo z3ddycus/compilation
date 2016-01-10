@@ -17,8 +17,8 @@ struct _ref_manager {
 size_t hashString(void* s);
 int comparString(void* a, void* b);
 //char* concateneChamp(RefManager manager, ChampReference champ);  OPTION -s
-void deleteSpaceSuffixe(char* s);
-char* stringAfterSpace(char* s);
+void deleteSpaceSuffixeManager(char* s);
+char* stringAfterSpaceManager(char* s);
 char* setNb(int i);
 int getNb(char* c);
 
@@ -182,8 +182,8 @@ char* concateneChamp(RefManager manager, ChampReference champ) {
 				Reference ref = nextRefManager(manager);
 				char* c = ref->champs[champ];
 				if (c != NULL) {
-					c = stringAfterSpace(c);
-					deleteSpaceSuffixe(c);
+					c = stringAfterSpaceManager(c);
+					deleteSpaceSuffixeManager(c);
 					size_t tailleTmp = strlen(c);
 					if (tailleTmp > 0) {
 						strncpy()
@@ -219,7 +219,7 @@ int comparString(void* a, void* b) {
 }
 
 
-void deleteSpaceSuffixe(char* s) {
+void deleteSpaceSuffixeManager(char* s) {
 	if (s != NULL) {
 		size_t taille = strlen(s);
 		for (int k = taille -1; k >= 0 && s[k] == ' '; --k) {
@@ -228,7 +228,7 @@ void deleteSpaceSuffixe(char* s) {
 	}
 }
 
-char* stringAfterSpace(char* s) {
+char* stringAfterSpaceManager(char* s) {
 	if (s != NULL) {
 		size_t taille = strlen(s);
 		char* result = s;
