@@ -3,6 +3,7 @@
 #include "include/sorted_set.h"
 #include <string.h>
 #include <stdio.h>
+#include <ctype.h>
 
 #define SIZE_BUFFER_REFERENCE_MANAGER 10000000
 #define SIZE_BUFFER_ID 10000
@@ -11,7 +12,6 @@ char compteur [SIZE_BUFFER_ID];
 struct _ref_manager {
 	HashMap map;
 	int onlyUpdateMode;
-	//int stringHeadMode;
 };
 
 size_t hashString(void* s);
@@ -28,7 +28,6 @@ RefManager newRefManager() {
 	RefManager result = malloc(sizeof(*result)); 
 	result->map = newHashMap(hashString, (int (*) (void*, void*)) strcmp);
 	result->onlyUpdateMode = 0;
-	//result->stringHeadMode = 0;
 	return result;
 }
 
@@ -45,9 +44,6 @@ void deleteRefManager(RefManager* manager) {
 void setOnlyUpdateMode(RefManager manager, int flag) {
 	manager->onlyUpdateMode = flag;
 } 
-void setStringHeadMode(RefManager manager, int flag) {
-	//manager->stringHeadMode = flag;
-}
 // GETTER
 
 /**
@@ -136,6 +132,9 @@ void normalizeKey(RefManager manager) {
 		} 
 		else 
 		{
+			removeRefManager(manager, ref->id);
+			ref->id = id;
+			setRefManager(manager, ref);
 			setHashMap(nbUse, id, setNb(1));
 		}
 	}
@@ -183,6 +182,7 @@ char* setNb(int i) {
 }
 
 int getNb(char* c) {
+	if (c == NULL) return 0;
 	return c - compteur;
 }
 
@@ -230,7 +230,7 @@ char* getInitialesAuthor(char* s) {
 		if (s[k] == ',') {
 			mode = 1;
 		} else {
-			if (mode) {
+			if (mode && isalpha(s[k])) {
 				buffer[cur] = s[k];
 				++cur;
 				mode = 0;

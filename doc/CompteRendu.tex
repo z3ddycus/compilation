@@ -19,7 +19,6 @@
 \maketitle
 \begin{center}
 \begin{tabular}{ll}
-  Version~: & 0.1\\[.5em]
   Date~: & \date{\today}\\[.5em]
   Rédigé par~: & Thomas \textsc{Capet}\\
                & Yohann \textsc{Henry}\\
@@ -51,13 +50,6 @@ en le privant de tous les blocs différents de \texttt{type}.
 \texttt{mybib commande -c nomFichier.bib}
 \newline
 Affiche sur la sortie standard les clés en doublon dans le fichier \texttt{.bib}.
-
-\subsection{Option -k}
-\texttt{mybib commande -k nomFichier.bib}
-\newline
-Avec cette commande, le fichier \texttt{nomfichier.bib} est parsé pour en extraire les clés et les renommer selon les initiales des auteurs suivis 
-de la date et d'un nombre permettant de différencier les doublons s'il y en a.
-Par exemple, pour les auteurs Alfred, Lady Gaga, Batman ayant écrit un livre en 2017, la clé serait ALB:2017.
 
 \subsection{Option -b}
 \texttt{mybib -b toto.tex}
