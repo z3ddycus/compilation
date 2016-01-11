@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2015.12.14)  11 JAN 2016 16:23
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2015.12.14)  11 JAN 2016 19:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -520,23 +520,55 @@ Package: varioref 2014/10/28 v1.5a package for extended references (FMi)
 \CommentStream=\write3
 
 Excluding comment 'comment')
-No file CompteRendu.aux.
+(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count106
+\lst@gtempboxa=\box28
+\lst@token=\toks20
+\lst@length=\count107
+\lst@currlwidth=\dimen128
+\lst@column=\count108
+\lst@pos=\count109
+\lst@lostspace=\dimen129
+\lst@width=\dimen130
+\lst@newlines=\count110
+\lst@lineno=\count111
+\lst@maxwidth=\dimen131
+
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
+\c@lstnumber=\count112
+\lst@skipnumbers=\count113
+\lst@framebox=\box29
+)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2015/06/04 1.6 listings configuration
+))
+Package: listings 2015/06/04 1.6 (Carsten Heinz)
+
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2015/06/04 1.6 listings language file
+)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
+)
+(./CompteRendu.aux)
 \openout1 = `CompteRendu.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -573,17 +605,17 @@ LaTeX Font Info:    ... okay on input line 18.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count106
-\scratchdimen=\dimen128
-\scratchbox=\box28
-\nofMPsegments=\count107
-\nofMParguments=\count108
-\everyMPshowfont=\toks20
-\MPscratchCnt=\count109
-\MPscratchDim=\dimen129
-\MPnumerator=\count110
-\makeMPintoPDFobject=\count111
-\everyMPtoPDFconversion=\toks21
+\scratchcounter=\count114
+\scratchdimen=\dimen132
+\scratchbox=\box30
+\nofMPsegments=\count115
+\nofMParguments=\count116
+\everyMPshowfont=\toks21
+\MPscratchCnt=\count117
+\MPscratchDim=\dimen133
+\MPnumerator=\count118
+\makeMPintoPDFobject=\count119
+\everyMPtoPDFconversion=\toks22
 ) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
 
@@ -599,8 +631,8 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-\AtBeginShipoutBox=\box29
-Package hyperref Info: Link coloring OFF on input line 18.
+\AtBeginShipoutBox=\box31
+Package hyperref Info: Link coloring OFF on input line 19.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -608,78 +640,94 @@ Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count112
+\c@section@level=\count120
 LaTeX Info: Redefining \Ref on input line 513.
 )
-LaTeX Info: Redefining \ref on input line 18.
-LaTeX Info: Redefining \pageref on input line 18.
-LaTeX Info: Redefining \nameref on input line 18.
+LaTeX Info: Redefining \ref on input line 19.
+LaTeX Info: Redefining \pageref on input line 19.
+LaTeX Info: Redefining \nameref on input line 19.
+
+(./CompteRendu.out) (./CompteRendu.out)
 \@outlinefile=\write4
 \openout4 = `CompteRendu.out'.
 
-LaTeX Info: Redefining \Ref on input line 18.
+LaTeX Info: Redefining \Ref on input line 19.
+\c@lstlisting=\count121
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 20.
+(Font)              <12> on input line 21.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 20.
+(Font)              <8> on input line 21.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 20.
+(Font)              <6> on input line 21.
 
 
 LaTeX Warning: No \author given.
 
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.95> on input line 21.
+(Font)              <10.95> on input line 22.
 [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./CompteRendu.toc)
 \tf@toc=\write5
 \openout5 = `CompteRendu.toc'.
 
- [2]
-! Undefined control sequence.
-l.40 \su
-        
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 41.
-[3]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 41.
+[2]
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 40.
+ (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
+File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 58.
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 58.
+ [3]
+Overfull \hbox (2.16714pt too wide) in paragraph at lines 125--125
+ [] \T1/cmtt/m/n/10.95 |edition|editor|eprint|howpublished|institution|isbn|jou
+rnal|key|month|note[] 
+ []
+
+
+Overfull \hbox (13.48389pt too wide) in paragraph at lines 125--125
+ [] \T1/cmtt/m/n/10.95 |number|organization|pages|publisher|school|series|title
+|type|url|volume|year[] 
+ []
+
+[4]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 145.
+ [5]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 145.
  (./CompteRendu.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 41.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 41.
-
-
-Package rerunfilecheck Warning: File `CompteRendu.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `CompteRendu.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  A02D95553E30B97FF125B1AA17CF9044;47.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 41.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 145.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 145.
+Package rerunfilecheck Info: File `CompteRendu.out' has not changed.
+(rerunfilecheck)             Checksum: 806AB45BBFF72F1D0E4038A48C7FDBC0;1102.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 145.
  ) 
 Here is how much of TeX's memory you used:
- 7251 strings out of 495000
- 105432 string characters out of 6181168
- 197641 words of memory out of 5000000
- 10370 multiletter control sequences out of 15000+600000
- 12589 words of font info for 33 fonts, out of 8000000 for 9000
+ 9102 strings out of 495000
+ 130255 string characters out of 6181168
+ 246540 words of memory out of 5000000
+ 12144 multiletter control sequences out of 15000+600000
+ 14462 words of font info for 36 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 30i,6n,64p,245b,332s stack positions out of 5000i,500n,10000p,200000b,80000s
- </home/zeddycus/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600pk> </hom
-e/zeddycus/.texmf-var/fonts/pk/ljfour/jknappen/ec/eccc1095.600pk> </home/zeddyc
-us/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1095.600pk> </home/zeddycus/.texm
-f-var/fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </home/zeddycus/.texmf-var/fo
-nts/pk/ljfour/jknappen/ec/ecbx1728.600pk>
-Output written on CompteRendu.pdf (3 pages, 25122 bytes).
+ 34i,6n,72p,295b,1767s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </home/zeddycus/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk> </hom
+e/zeddycus/.texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1095.600pk> </home/zeddyc
+us/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1095.600pk> </home/zeddycus/.texm
+f-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600pk> </home/zeddycus/.texmf-var/fo
+nts/pk/ljfour/jknappen/ec/eccc1095.600pk> </home/zeddycus/.texmf-var/fonts/pk/l
+jfour/jknappen/ec/ecrm1095.600pk> </home/zeddycus/.texmf-var/fonts/pk/ljfour/jk
+nappen/ec/ecrm1200.600pk> </home/zeddycus/.texmf-var/fonts/pk/ljfour/jknappen/e
+c/ecbx1728.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmsy10.pfb>
+Output written on CompteRendu.pdf (5 pages, 93432 bytes).
 PDF statistics:
- 119 PDF objects out of 1000 (max. 8388607)
- 37 compressed objects within 1 object stream
- 6 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 450 PDF objects out of 1000 (max. 8388607)
+ 177 compressed objects within 2 object streams
+ 48 named destinations out of 1000 (max. 500000)
+ 137 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1,1 +1,17 @@
 \BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Notice d'utilisation}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Option -t}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Option -o}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Option -b}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.4}{Option -s}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.5}{Option -o}{section.2}% 7
+\BOOKMARK [1][-]{section.3}{Fonctionnement global}{}% 8
+\BOOKMARK [1][-]{section.4}{Structures de donn\351es utilis\351es}{}% 9
+\BOOKMARK [2][-]{subsection.4.1}{Collections}{section.4}% 10
+\BOOKMARK [2][-]{subsection.4.2}{R\351f\351rences}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.3}{Les gestionnaire de r\351f\351rences}{section.4}% 12
+\BOOKMARK [1][-]{section.5}{La grammaire}{}% 13
+\BOOKMARK [2][-]{subsection.5.1}{Les tokens}{section.5}% 14
+\BOOKMARK [3][-]{subsubsection.5.1.1}{Les tokens pour parser les .tex}{subsection.5.1}% 15
+\BOOKMARK [3][-]{subsubsection.5.1.2}{Les tokens pour parser les .bib}{subsection.5.1}% 16
+\BOOKMARK [2][-]{subsection.5.2}{D\351finition de la grammaire}{section.5}% 17

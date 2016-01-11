@@ -11,7 +11,8 @@
 \usepackage{hyperref}
 \usepackage[french]{varioref}
 \usepackage{comment}
-
+\usepackage{listings}
+\lstset{language=C}
 %Opening
 \title{\bfseries Compte Rendu \\ Compilation}
 \geometry{hmargin=2.5cm,vmargin=3cm}
@@ -40,8 +41,19 @@ Le projet consiste en la création d'un exécutable permettant la gestion de ré
 L'exécutable devait notament extraire les clés cités d'un fichier d'extension \texttt{.tex}, ainsi que les données contenues dans un fichier \texttt{.bib}.
 L'application effectuerait ensuite selon les options différents traitement et afficherait le résultat sur la sortie standard ou un fichier.
 
-\subsection{Structures de données utilisées}
-\subsubsection{Collections}
+\section{Notice d'utilisation}
+\subsection{Option -t}
+\subsection{Option -o}
+\subsection{Option -b}
+\subsection{Option -s}
+\subsection{Option -o}
+
+\section{Fonctionnement global}
+
+
+
+\section{Structures de données utilisées}
+\subsection{Collections}
 Pour travailler, nous avons d'abord développé plusieurs structures de données génériques de type collection :
 \begin{itemize}
  \item Les listes ordonnées 
@@ -50,6 +62,85 @@ Pour travailler, nous avons d'abord développé plusieurs structures de données
  \item Les tables de hachage
 \end{itemize}
 
-\subsubsection{Références}
-Nous avons ensuite créer un type Références. Ces derniers représentent toutes les données nécessaires pour enregistrer une référence.
+\subsection{Références}
+Nous avons ensuite créer un type Référence. Ce dernier représente toutes les données nécessaires pour enregistrer une référence d'un bibtex.
+\begin{lstlisting}
+struct _ref {
+    TypeReference type;
+    char* id;
+    char* champs[NB_CHAMP_REF];
+};
+
+typedef struct _ref * Reference;
+\end{lstlisting}
+
+Les attributs \texttt{type} et \texttt{id} sont trivialement le type et l'id de la référence.
+L'attribut \texttt{champs} est un tableau qui attribut à un type de champ une valeur en chaîne de caractères.
+Par défaut, cette valeur est initialisée avec une chaine de caractères vide.
+Plusieurs fonctions sont présentes dans \texttt{references.h} pour simplifier les différentes options demandées.
+Notamment, une des fonctions permet d'écrire sur un flux, le contenu d'une référence avec tous les champs obligatoires ou optionnels de ce type.
+
+\subsection {Les gestionnaire de références}
+Nous avons finalement créer un type RefManager, un gestionnaire de références.
+Ce dernier nous permait de stocker toutes les références contenus dans les \texttt{.tex} et les \texttt{.bib}. 
+Une fois le gestionnaire remplis, on traite les données selon les options demandées.
+
+\begin{lstlisting}
+struct _ref_manager {
+	HashMap map;
+	int onlyUpdateMode;
+};
+
+typedef struct _ref_manager* RefManager;
+\end{lstlisting}
+
+Le gestionnaire de références est une simple table de hachage avec pour clé, l'id d'une référence et en valeur, la référence correspondante.
+Comme pour référence, plusieurs fonctions utilitaires ont permis de simplifier les différentes options.
+
+\section{La grammaire}
+\subsection{Les tokens}
+La grammaire est lancée en contenant le mode dans lequel elle est lancée. Elle reconnait donc soit un fichier Bibtex, 
+soit un fichier Latex, mais jamais les deux en même temps.
+\subsubsection {Les tokens pour parser les .tex}
+\begin{itemize}
+ \item \begin{verbatim}CITE : \cite{[^}]+}\end{verbatim}
+ 
+ \item \begin{verbatim}NOCITE : \nocite{[^}]+}\end{verbatim}
+ 
+ \item \begin{verbatim}BIBNAME : \bibname{[^}]+}\end{verbatim}
+ 
+ \item \begin{verbatim}INCLUDE : \include{[^}]+}\end{verbatim}
+ 
+ \item \begin{verbatim}INPUT : \input{[^}]+}\end{verbatim}
+\end{itemize} 
+
+\subsubsection {Les tokens pour parser les .bib}
+\begin{itemize}
+ 
+ \item \begin{verbatim}TYPEREF : @Article|@Book|@Booklet|@Conference|@Inbook|@Incollection 
+|@Inproceedings|@Manual|@Mastersthesis|@Misc|@Phdthesis
+|@Proceedings|@Techreport|@Unpublished\end{verbatim}
+
+ \item  \begin{verbatim}TYPECHAMP: address|abstract|annote|author|booktitle|chapter|crossref
+ |edition|editor|eprint|howpublished|institution|isbn|journal|key|month|note
+ |number|organization|pages|publisher|school|series|title|type|url|volume|year\end{verbatim}
+ 
+ \item \begin{verbatim}KEY : {[a-zA-Z0-9]+(:[a-zA-Z0-9]+)*,\end{verbatim}
+ 
+ \item \begin{verbatim}VAL : {.*},|{.*}\n\end{verbatim}
+\end{itemize} 
+
+\subsection{Définition de la grammaire}
+
+\begin{lstlisting}
+file: bloc file
+    |;
+
+bloc: TYPEREF KEY champs '}';
+
+champs: TYPECHAMP champs
+    |TYPECHAMP VAL champs
+    |;
+\end{lstlisting}
+
 \end{document}
