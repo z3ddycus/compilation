@@ -65,8 +65,9 @@ size_t lengthMap(SortedMap l) {
  * Get element in SortedMap
  */
 void* getMap(SortedMap l, void* key) {
-	if (l->cur != NULL && l->compar(l->cur->key, key)) 
+	if (l->cur != NULL && l->compar(l->cur->key, key) == 0)
 	{
+        printf("Key equal : %s = %s\n", key, l->cur->key);
 		return l->cur->value;
 	} 
 	else 
@@ -95,6 +96,9 @@ void* getMap(SortedMap l, void* key) {
 					}
 				}
 		}
+        if (result) {
+            printf("Key/Value : %s %s\n", key, tmp->value);
+        }
 		return result ? tmp->value : NULL;
 	}
 }

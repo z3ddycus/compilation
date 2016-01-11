@@ -10,4 +10,13 @@ SortedSet keys;
 List texFiles;
 List bibFiles;
 
+// Fonctions pour rassembler un champ avec sa valeur.
+struct _champVal{
+    ChampReference champ;
+    char* val;
+};
+typedef struct _champVal* ChampVal;
+
+List champValList;
+
 #endif

@@ -15,7 +15,6 @@ struct _ref_manager {
 };
 
 size_t hashString(void* s);
-int comparString(void* a, void* b);
 //char* concateneChamp(RefManager manager, ChampReference champ);  OPTION -s
 void deleteSpaceSuffixeManager(char* s);
 char* stringAfterSpaceManager(char* s);
@@ -27,7 +26,7 @@ int getNb(char* c);
  */
 RefManager newRefManager() {
 	RefManager result = malloc(sizeof(*result)); 
-	result->map = newHashMap(hashString, comparString);
+	result->map = newHashMap(hashString, (int (*) (void*, void*)) strcmp);
 	result->onlyUpdateMode = 0;
 	//result->stringHeadMode = 0;
 	return result;
@@ -78,10 +77,12 @@ size_t sizeRefManager(RefManager manager) {
  * Set or replace the value for the key
  */
 void setRefManager(RefManager manager, Reference ref) {
-	if (!manager->onlyUpdateMode || containsRefManager(manager, ref->id)) {
+	if (manager->onlyUpdateMode && containsRefManager(manager, ref->id)) {
 		Reference oldRef = getRefManager(manager, ref->id);
 		setHashMap(manager->map, oldRef->id, updateReference(oldRef, ref));
-	}
+    } else if (!manager->onlyUpdateMode && !containsRefManager(manager, ref->id)) {
+        setHashMap(manager->map, ref->id, ref);
+    }
 }
 
 /**
@@ -209,13 +210,10 @@ size_t hashString(void* s) {
 	char* str = s;
 	size_t result = *str;
 	while(*str != 0) {
-		result = result * 37 + *str; 
+		result = result * 37 + *str;
+        ++str;
 	}
 	return result;
-}
-
-int comparString(void* a, void* b) {
-	return strcmp((char*) a, (char*) b);
 }
 
 
