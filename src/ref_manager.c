@@ -15,12 +15,12 @@ struct _ref_manager {
 };
 
 size_t hashString(void* s);
-//char* concateneChamp(RefManager manager, ChampReference champ);  OPTION -s
+int comparString(void* a, void* b);
 void deleteSpaceSuffixeManager(char* s);
 char* stringAfterSpaceManager(char* s);
 char* setNb(int i);
 int getNb(char* c);
-
+char* getInitialesAuthor(char* s);
 /**
  * Return a new hashmap allocated and initialized empty.
  */
@@ -99,7 +99,7 @@ void clearRefManager(RefManager manager) {
 	clearHashMap(manager->map);
 }
 
-/**
+
 void normalizeKey(RefManager manager) {
 	HashMap nbUse = newHashMap(hashString, comparString);
 	initIteratorRefManager(manager);
@@ -108,27 +108,31 @@ void normalizeKey(RefManager manager) {
 		Reference ref = nextRefManager(manager);
 		char id [SIZE_BUFFER_ID];
 		char* author = ref->champs[ref_author];
-		if (author != NULL) {
-			
+		if (strlen(author) > 0) {
+			strcpy(id, getInitialesAuthor(author));
 		}
+		sprintf(id + strlen(id), ":%s", ref->champs[ref_year]);
+		printf("\n\n\n\n\n\n%s\n\n\n\n\n\n", id);
 		if (containsHashMap(nbUse, id)) 
 		{
 			char* nbTmp = getHashMap(nbUse, id);
 			int occurence = getNb(nbTmp);
+			size_t tailleCle = strlen(id);
 			if (occurence == 1) 
 			{
 				Reference oldRef = getRefManager(manager, id);
 				char buffer[SIZE_BUFFER_ID];
 				strcpy(buffer, id);
-				size_t tailleCle = strlen(buffer);
 				snprintf(buffer + tailleCle, SIZE_BUFFER_ID - tailleCle, ":1"); 
 				free(oldRef->id);
 				oldRef->id = buffer;
 				removeRefManager(manager, id);
 				setRefManager(manager, oldRef);
 			}
+			snprintf(id + tailleCle, SIZE_BUFFER_ID - tailleCle, ":%d", occurence + 1);
+			ref->id = id;
 			setHashMap(nbUse, id, setNb(occurence + 1));
-			
+			setRefManager(manager, ref);
 		} 
 		else 
 		{
@@ -136,7 +140,7 @@ void normalizeKey(RefManager manager) {
 		}
 	}
 }
-*/
+
 // ITERATOR
 
 /**
@@ -173,29 +177,6 @@ void referenceToBibtex(RefManager manager, FILE* f) {
 
 
 // OUTILS
-/**
-char* concateneChamp(RefManager manager, ChampReference champ) {
-		if (champ >= 0 && champ < NB_CHAMP_REF) {
-			static char buffer[SIZE_BUFFER_REFERENCE_MANAGER];
-			size_t taille = 0;
-			initIteratorRefManager(manager);
-			while(hasNextRefManager(manager)) {
-				Reference ref = nextRefManager(manager);
-				char* c = ref->champs[champ];
-				if (c != NULL) {
-					c = stringAfterSpaceManager(c);
-					deleteSpaceSuffixeManager(c);
-					size_t tailleTmp = strlen(c);
-					if (tailleTmp > 0) {
-						strncpy()
-					}
-				}
-			}
-			return buffer;
-		}
-		return "";
-}*/ // OPTION -s
-
 
 char* setNb(int i) {
 	return compteur + i;
@@ -205,6 +186,9 @@ int getNb(char* c) {
 	return c - compteur;
 }
 
+int comparString(void* a, void* b) {
+	return strcmp(a,b);
+}
 
 size_t hashString(void* s) {
 	char* str = s;
@@ -236,4 +220,23 @@ char* stringAfterSpaceManager(char* s) {
 		return result;
 	}
 	return NULL;
+}
+
+char* getInitialesAuthor(char* s) {
+	static char buffer[SIZE_BUFFER_ID];
+	int cur = 0;
+	int mode = 1;
+	for (int k = 0; k < strlen(s); ++k) {
+		if (s[k] == ',') {
+			mode = 1;
+		} else {
+			if (mode) {
+				buffer[cur] = s[k];
+				++cur;
+				mode = 0;
+			}
+		}
+	}
+	buffer[cur] = 0;
+	return buffer;
 }

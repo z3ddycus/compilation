@@ -72,5 +72,5 @@ int hasNextRefManager(RefManager manager);
  * Return the next element
  */
 Reference nextRefManager(RefManager manager);
-
+void normalizeKey(RefManager manager);
 #endif

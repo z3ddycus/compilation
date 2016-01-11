@@ -432,10 +432,23 @@ int main(int argc, char** argv) {
                 fprintf(output, "%s", referenceToString(ref));
             }
         }
+    } else if (strcmp(argv[1], "-k") == 0){ 
+        if (argc < 3) {
+            fprintf(stderr, "Usage %s -c bibFile\n", programName);
+            exit(0);
+        }
+        yyin = fopen(argv[2], "r");
+        if (yyin == NULL) {
+            fprintf(stderr, "Impossible d'ouvrir le fichier %s.\n", argv[3]);
+            exit(0);
+        }
+        BEGIN(bibtex);
+        yyparse();
+        normalizeKey(refManager);
+        referenceToBibtex(refManager, output);
     } else {
         fprintf(stderr, "Usage %s [-bcst] -o\n", programName);
         exit(0);
     }
-
     return EXIT_SUCCESS;
 }
