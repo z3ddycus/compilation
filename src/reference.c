@@ -9,20 +9,20 @@
 
 
 char* typeReferenceArray[NB_TYPE_REF] = {
-	"article",
-	"book",
-	"booklet",
-	"conference",
-	"inbook",
-	"incollection",
-	"inproceedings",
-	"manual",
-	"mastersthesis",
-	"misc",
-	"phdthesis",
-	"proceedings",
-	"techreport",
-	"unpublished"
+	"Article",
+	"Book",
+	"Booklet",
+	"Conference",
+	"Inbook",
+	"Incollection",
+	"Inproceedings",
+	"Manual",
+	"Mastersthesis",
+	"Misc",
+	"Phdthesis",
+	"Proceedings",
+	"Techreport",
+	"Unpublished"
 };
 
 char* champReferenceArray[NB_CHAMP_REF] = {
@@ -69,20 +69,21 @@ Reference newReference(TypeReference type, char* id) {
 		result->id = valeur;
 		
 		for (int k = 0; k < NB_CHAMP_REF; ++k) {
-			result->champs[k] = NULL;
+			result->champs[k] = "";
 		}
 		return result;
 }
 
 /**
- * Return a Type corresponding to the string, ref_article by default.
+ * Return a Type corresponding to the string.
  */
 TypeReference getType(char* s) {
     char str[strlen(s) + 1];
     sprintf(str, "%s", s);
-    for (int i = 0; str[i]; i++) {
+    for (int i = 1; str[i]; i++) {
         str[i] = tolower(str[i]);
     }
+    str[0] = toupper(str[0]);
         
     for (int i = 0; i < NB_TYPE_REF; ++i) {
         if (strcmp(str, typeReferenceArray[i]) == 0) {
@@ -90,11 +91,12 @@ TypeReference getType(char* s) {
         }
     }
     
-    return ref_article;
+    fprintf(stderr, "Type %s inconnu.\n", s);
+    exit(0);
 }
 
 /**
- * Return a Champ corresponding to the string, ref_author by default.
+ * Return a Champ corresponding to the string.
  */
 ChampReference getChamp(char* s) {
     char str[strlen(s) + 1];
@@ -109,7 +111,8 @@ ChampReference getChamp(char* s) {
         }
     }
     
-    return ref_author;
+    fprintf(stderr, "Champ %s inconnu.\n", s);
+    exit(0);
 }
 
 void deleteReference(Reference* ref) {

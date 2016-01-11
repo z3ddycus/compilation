@@ -2,8 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "include/global.h"
 #include "mybib.tab.h"
+#include "include/hashmap.h"
 
 char* filePrefix;
 %}
@@ -168,6 +170,17 @@ void calcPrefix(char* s) {
     }
 }
 
+// Fonction de hachage.
+size_t hash(void* s) {
+	char* str = s;
+	size_t result = *str;
+	while(*str != 0) {
+		result = result * 37 + *str;
+        ++str;
+	}
+	return result;
+}
+
 int main(int argc, char** argv) {
     if (argc == 0) {
         fprintf(stderr, "Usage %s [-bcekstuo]\n", argv[0]);
@@ -180,6 +193,7 @@ int main(int argc, char** argv) {
     keys = newSortedSet((int (*) (void*, void*)) strcmp);
     texFiles = newList((int (*) (void*, void*)) strcmp);
     bibFiles = newList((int (*) (void*, void*)) strcmp);
+    bibKeys = newList((int (*) (void*, void*)) strcmp);
     champValList = newList((int (*) (void*, void*)) champValComp);
 
     /**
@@ -200,6 +214,10 @@ int main(int argc, char** argv) {
 
         calcPrefix(argv[2]);
         yyin = fopen(argv[2], "r");
+        if (yyin == NULL) {
+            fprintf(stderr, "Impossible d'ouvrir le fichier %s.\n", argv[3]);
+            exit(0);
+        }
         BEGIN(latex);
         yyparse();
 
@@ -219,10 +237,24 @@ int main(int argc, char** argv) {
         }
 
         calcPrefix(argv[2]);
+        yyin = fopen(argv[2], "r");
+        if (yyin == NULL) {
+            fprintf(stderr, "Impossible d'ouvrir le fichier %s.\n", argv[3]);
+            exit(0);
+        }
+        BEGIN(bibtex);
+        yyparse();
 
         SortedSet set = newSortedSet((int (*) (void*, void*)) strcmp);
-
-        
+        initIteratorList(bibKeys);
+        while (hasNextList(bibKeys)) {
+            char* key = nextList(bibKeys);
+            if (containsSortedSet(set, key)) {
+                printf("Doublon sur la clé : %s\n", key);
+            } else {
+                insertSortedSet(set, key);
+            }
+        }
     } else if (strcmp(argv[1], "-e") == 0) {
         if (argc < 4) {
             fprintf(stderr, "Usage %s -e opt regexp bibFile\n", argv[0]);
@@ -244,13 +276,161 @@ int main(int argc, char** argv) {
         }
 
         calcPrefix(argv[2]);
+        yyin = fopen(argv[2], "r");
+        if (yyin == NULL) {
+            fprintf(stderr, "Impossible d'ouvrir le fichier %s.\n", argv[3]);
+            exit(0);
+        }
+        BEGIN(bibtex);
+        yyparse();
+
+        HashMap publishers = newHashMap((size_t (*) (void*)) hash, (int (*) (void*, void*)) strcmp);
+        HashMap series = newHashMap((size_t (*) (void*)) hash, (int (*) (void*, void*)) strcmp);
+        HashMap journals = newHashMap((size_t (*) (void*)) hash, (int (*) (void*, void*)) strcmp);
+        HashMap organizations = newHashMap((size_t (*) (void*)) hash, (int (*) (void*, void*)) strcmp);
+
+        initIteratorRefManager(refManager);
+        while (hasNextRefManager(refManager)) {
+            Reference ref = nextRefManager(refManager);
+            if (strlen(ref->champs[ref_publisher]) != 0) {
+                size_t size = strlen(ref->champs[ref_publisher]);
+                char* key = malloc(size + 1);
+                int count = 0;
+                for (int i = 0; i < size; ++i) {
+                    if (isalpha(ref->champs[ref_publisher][i])) {
+                        key[count] = toupper(ref->champs[ref_publisher][i]);
+                        ++count;
+                    }
+                }
+                key[count] = '\0';
+                setHashMap(publishers, key, ref->champs[ref_publisher]);
+                ref->champs[ref_publisher] = key;
+            } else if (strlen(ref->champs[ref_journal]) != 0) {
+                size_t size = strlen(ref->champs[ref_journal]);
+                char* key = malloc(size + 1);
+                int count = 0;
+                for (int i = 0; i < size; ++i) {
+                    if (isalpha(ref->champs[ref_journal][i])) {
+                        key[count] = toupper(ref->champs[ref_journal][i]);
+                        ++count;
+                    }
+                }
+                key[count] = '\0';
+                setHashMap(journals, key, ref->champs[ref_journal]);
+                ref->champs[ref_journal] = key;
+            } else if (strlen(ref->champs[ref_series]) != 0) {
+                size_t size = strlen(ref->champs[ref_series]);
+                char* key = malloc(size + 1);
+                int count = 0;
+                for (int i = 0; i < size; ++i) {
+                    if (isalpha(ref->champs[ref_series][i])) {
+                        key[count] = toupper(ref->champs[ref_series][i]);
+                        ++count;
+                    }
+                }
+                key[count] = '\0';
+                setHashMap(series, key, ref->champs[ref_series]);
+                ref->champs[ref_series] = key;
+            } else if (strlen(ref->champs[ref_organization]) != 0) {
+                size_t size = strlen(ref->champs[ref_organization]);
+                char* key = malloc(size + 1);
+                int count = 0;
+                for (int i = 0; i < size; ++i) {
+                    if (isalpha(ref->champs[ref_organization][i])) {
+                        key[count] = toupper(ref->champs[ref_organization][i]);
+                        ++count;
+                    }
+                }
+                key[count] = '\0';
+                setHashMap(organizations, key, ref->champs[ref_organization]);
+                ref->champs[ref_organization] = key;
+            }
+        }
+
+        if (sizeHashMap(publishers) > 0) {
+            printf("@Comment{\"Automatically generated strings for fields of type publisher\"}\n");
+            printf("@String{");
+            initIteratorHashMap(publishers);
+            while (hasNextHashMap(publishers)) {
+                char* key = nextHashMap(publishers);
+                char* val = getHashMap(publishers, key);
+                printf("%s=\"%s\"", key, val);
+                if (hasNextHashMap(publishers)) {
+                    printf(",");
+                }
+            }
+            printf("}\n");
+        }
+
+        if (sizeHashMap(journals) > 0) {
+            printf("@Comment{\"Automatically generated strings for fields of type journal\"}\n");
+            printf("@String{");
+            initIteratorHashMap(journals);
+            while (hasNextHashMap(journals)) {
+                char* key = nextHashMap(journals);
+                char* val = getHashMap(journals, key);
+                printf("%s=\"%s\"", key, val);
+                if (hasNextHashMap(journals)) {
+                    printf(",");
+                }
+            }
+            printf("}\n");
+        }
+
+        if (sizeHashMap(series) > 0) {
+            printf("@Comment{\"Automatically generated strings for fields of type series\"}\n");
+            printf("@String{");
+            initIteratorHashMap(series);
+            while (hasNextHashMap(series)) {
+                char* key = nextHashMap(series);
+                char* val = getHashMap(series, key);
+                printf("%s=\"%s\"", key, val);
+                if (hasNextHashMap(series)) {
+                    printf(",");
+                }
+            }
+            printf("}\n");
+        }
+
+        if (sizeHashMap(organizations) > 0) {
+            printf("@Comment{\"Automatically generated strings for fields of type organization\"}\n");
+            printf("@String{");
+            initIteratorHashMap(organizations);
+            while (hasNextHashMap(organizations)) {
+                char* key = nextHashMap(organizations);
+                char* val = getHashMap(organizations, key);
+                printf("%s=\"%s\"", key, val);
+                if (hasNextHashMap(organizations)) {
+                    printf(",");
+                }
+            }
+            printf("}\n");
+        }
+
+        referenceToBibtex(refManager, stdout);
     } else if (strcmp(argv[1], "-t") == 0) {
         if (argc < 3) {
             fprintf(stderr, "Usage %s -t type bibFile\n", argv[0]);
             exit(0);
         }
-
         calcPrefix(argv[3]);
+        yyin = fopen(argv[3], "r");
+        if (yyin == NULL) {
+            fprintf(stderr, "Impossible d'ouvrir le fichier %s.\n", argv[3]);
+            exit(0);
+        }
+        BEGIN(bibtex);
+        yyparse();
+
+
+        TypeReference type = getType(argv[2]);
+        initIteratorRefManager(refManager);
+        while (hasNextRefManager(refManager)) {
+            Reference ref = nextRefManager(refManager);
+            if (ref->type == type) {
+                printf("%s", referenceToString(ref));
+            }
+        }
     } else if (strcmp(argv[1], "-u") == 0) {
         if (argc < 2) {
             fprintf(stderr, "Usage %s -u bibFile\n", argv[0]);

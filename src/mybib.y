@@ -32,6 +32,7 @@ bloc: TYPEREF KEY champs {
     }
     clearList(champValList);
     setRefManager(refManager, ref);
+    insertList(bibKeys, $2);
 } '}'
 ;
 

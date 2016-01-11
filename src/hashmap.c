@@ -3,7 +3,7 @@
 #include "include/sorted_map.h"
 #include "include/hashmap.h"
 
-#define SIZE_HASHMAP 3
+#define SIZE_HASHMAP 1024
 
 struct _hashmap {
 	SortedMap* lists;
@@ -145,7 +145,9 @@ void* nextHashMap(HashMap map) {
 		exit(EXIT_FAILURE);
 	}
 	void* value = nextMap(map->lists[map->iterator]);
+
 	if (!hasNextMap(map->lists[map->iterator])) {
+        ++map->iterator;
 		while(map->iterator < SIZE_HASHMAP && lengthMap(map->lists[map->iterator]) == 0) {
 			++map->iterator;
 		}

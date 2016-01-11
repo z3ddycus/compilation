@@ -67,7 +67,6 @@ size_t lengthMap(SortedMap l) {
 void* getMap(SortedMap l, void* key) {
 	if (l->cur != NULL && l->compar(l->cur->key, key) == 0)
 	{
-        printf("Key equal : %s = %s\n", key, l->cur->key);
 		return l->cur->value;
 	} 
 	else 
@@ -96,9 +95,6 @@ void* getMap(SortedMap l, void* key) {
 					}
 				}
 		}
-        if (result) {
-            printf("Key/Value : %s %s\n", key, tmp->value);
-        }
 		return result ? tmp->value : NULL;
 	}
 }
@@ -201,7 +197,7 @@ void* nextMap(SortedMap l) {
 		fprintf(stderr, "the iterator don't have a next element");
 		exit(EXIT_FAILURE);
 	}
-	void* result = l->iterator->value;
+	void* result = l->iterator->key;
 	l->iterator = l->iterator->next;
 	return result;
 }

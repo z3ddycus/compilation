@@ -50,6 +50,11 @@ Reference removeRefManager(RefManager manager, char* id);
  */
 void clearRefManager(RefManager manager);
 
+/**
+ * Serialize the manager
+ */
+void referenceToBibtex(RefManager manager, FILE* f);
+
 // ITERATOR
 
 /**
