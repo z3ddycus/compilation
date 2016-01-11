@@ -2,6 +2,7 @@
 #define REF_MANAGER_H
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "reference.h"
 
 typedef struct _ref_manager* RefManager;

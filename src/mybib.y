@@ -10,7 +10,6 @@
 %}
 %union{
     char* string;
-    char carac;
 }
 %token <string> TYPEREF TYPECHAMP KEY VAL
 %left TYPEREF

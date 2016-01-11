@@ -182,8 +182,8 @@ size_t hash(void* s) {
 }
 
 int main(int argc, char** argv) {
-    if (argc == 0) {
-        fprintf(stderr, "Usage %s [-bcekstuo]\n", argv[0]);
+    if (argc == 1) {
+        fprintf(stderr, "Usage %s [-bcst] -o\n", argv[0]);
         exit(0);
     }
 
@@ -196,19 +196,35 @@ int main(int argc, char** argv) {
     bibKeys = newList((int (*) (void*, void*)) strcmp);
     champValList = newList((int (*) (void*, void*)) champValComp);
 
+    char* programName = argv[0];
+
+    FILE* output = stdout;
+    // On cherche -o.
+    for (int i = 0; i < argc && output == stdout; ++i) {
+        if (strcmp(argv[i], "-o") == 0) {
+            output = fopen(argv[i + 1], "w");
+            if (output == NULL) {
+                fprintf(stderr, "Impossible d'ouvrir le fichier %s.\n", argv[i + 1]);
+                exit(0);
+            }
+
+            if (i == 1) {
+                argv = &argv[i + 1];
+                argc -= 2;
+            }
+        }
+    }
+
     /**
     -b 1 arg  : genere un bibtex a partir d'un .tex
     -c 1 arg  : verifie que chaque toutes les entrées ont une entrée propre
-    -e 3 args : extraction d'un bibtex par filtre regexp
-    -k 1 arg  : normalise les clés d'un .bib
     -s 1 arg  : extraction des champs pour tri
     -t 2 args : ne garde que les entrées de type t
-    -u 1 arg  : supprime les doublons
     -o 1 arg  : redirection de la sortie standard dans un fichier
     */
     if (strcmp(argv[1], "-b") == 0) {
-        if (argc < 2) {
-            fprintf(stderr, "Usage %s -b texFile\n", argv[0]);
+        if (argc < 3) {
+            fprintf(stderr, "Usage %s -b texFile\n", programName);
             exit(0);
         }
 
@@ -224,15 +240,14 @@ int main(int argc, char** argv) {
         initIteratorSortedSet(keys);
         while (hasNextSortedSet(keys)) {
             char* key = nextSortedSet(keys);
-            printf("Key : %s\n", key);
             Reference ref = getRefManager(refManager, key);
             if (ref != NULL) {
-                printf("%s\n", referenceToString(ref));
+                fprintf(output, "%s\n", referenceToString(ref));
             }
         }
     } else if (strcmp(argv[1], "-c") == 0) {
-        if (argc < 2) {
-            fprintf(stderr, "Usage %s -c bibFile\n", argv[0]);
+        if (argc < 3) {
+            fprintf(stderr, "Usage %s -c bibFile\n", programName);
             exit(0);
         }
 
@@ -250,28 +265,14 @@ int main(int argc, char** argv) {
         while (hasNextList(bibKeys)) {
             char* key = nextList(bibKeys);
             if (containsSortedSet(set, key)) {
-                printf("Doublon sur la clé : %s\n", key);
+                fprintf(output, "Doublon sur la clé : %s\n", key);
             } else {
                 insertSortedSet(set, key);
             }
         }
-    } else if (strcmp(argv[1], "-e") == 0) {
-        if (argc < 4) {
-            fprintf(stderr, "Usage %s -e opt regexp bibFile\n", argv[0]);
-            exit(0);
-        }
-
-        calcPrefix(argv[4]);
-    } else if (strcmp(argv[1], "-k") == 0) {
-        if (argc < 2) {
-            fprintf(stderr, "Usage %s -k bibFile\n", argv[0]);
-            exit(0);
-        }
-
-        calcPrefix(argv[2]);
     } else if (strcmp(argv[1], "-s") == 0) {
-        if (argc < 2) {
-            fprintf(stderr, "Usage %s -s bibFile\n", argv[0]);
+        if (argc < 3) {
+            fprintf(stderr, "Usage %s -s bibFile\n", programName);
             exit(0);
         }
 
@@ -348,69 +349,69 @@ int main(int argc, char** argv) {
         }
 
         if (sizeHashMap(publishers) > 0) {
-            printf("@Comment{\"Automatically generated strings for fields of type publisher\"}\n");
-            printf("@String{");
+            fprintf(output, "@Comment{\"Automatically generated strings for fields of type publisher\"}\n");
+            fprintf(output, "@String{");
             initIteratorHashMap(publishers);
             while (hasNextHashMap(publishers)) {
                 char* key = nextHashMap(publishers);
                 char* val = getHashMap(publishers, key);
-                printf("%s=\"%s\"", key, val);
+                fprintf(output, "%s=\"%s\"", key, val);
                 if (hasNextHashMap(publishers)) {
-                    printf(",");
+                    fprintf(output, ",");
                 }
             }
-            printf("}\n");
+            fprintf(output, "}\n");
         }
 
         if (sizeHashMap(journals) > 0) {
-            printf("@Comment{\"Automatically generated strings for fields of type journal\"}\n");
-            printf("@String{");
+            fprintf(output, "@Comment{\"Automatically generated strings for fields of type journal\"}\n");
+            fprintf(output, "@String{");
             initIteratorHashMap(journals);
             while (hasNextHashMap(journals)) {
                 char* key = nextHashMap(journals);
                 char* val = getHashMap(journals, key);
-                printf("%s=\"%s\"", key, val);
+                fprintf(output, "%s=\"%s\"", key, val);
                 if (hasNextHashMap(journals)) {
-                    printf(",");
+                    fprintf(output, ",");
                 }
             }
-            printf("}\n");
+            fprintf(output, "}\n");
         }
 
         if (sizeHashMap(series) > 0) {
-            printf("@Comment{\"Automatically generated strings for fields of type series\"}\n");
-            printf("@String{");
+            fprintf(output, "@Comment{\"Automatically generated strings for fields of type series\"}\n");
+            fprintf(output, "@String{");
             initIteratorHashMap(series);
             while (hasNextHashMap(series)) {
                 char* key = nextHashMap(series);
                 char* val = getHashMap(series, key);
-                printf("%s=\"%s\"", key, val);
+                fprintf(output, "%s=\"%s\"", key, val);
                 if (hasNextHashMap(series)) {
-                    printf(",");
+                    fprintf(output, ",");
                 }
             }
-            printf("}\n");
+            fprintf(output, "}\n");
         }
 
         if (sizeHashMap(organizations) > 0) {
-            printf("@Comment{\"Automatically generated strings for fields of type organization\"}\n");
-            printf("@String{");
+            fprintf(output, "@Comment{\"Automatically generated strings for fields of type organization\"}\n");
+            fprintf(output, "@String{");
             initIteratorHashMap(organizations);
             while (hasNextHashMap(organizations)) {
                 char* key = nextHashMap(organizations);
                 char* val = getHashMap(organizations, key);
-                printf("%s=\"%s\"", key, val);
+                fprintf(output, "%s=\"%s\"", key, val);
                 if (hasNextHashMap(organizations)) {
-                    printf(",");
+                    fprintf(output, ",");
                 }
             }
-            printf("}\n");
+            fprintf(output, "}\n");
         }
 
-        referenceToBibtex(refManager, stdout);
+        referenceToBibtex(refManager, output);
     } else if (strcmp(argv[1], "-t") == 0) {
-        if (argc < 3) {
-            fprintf(stderr, "Usage %s -t type bibFile\n", argv[0]);
+        if (argc < 4) {
+            fprintf(stderr, "Usage %s -t type bibFile\n", programName);
             exit(0);
         }
         calcPrefix(argv[3]);
@@ -428,21 +429,11 @@ int main(int argc, char** argv) {
         while (hasNextRefManager(refManager)) {
             Reference ref = nextRefManager(refManager);
             if (ref->type == type) {
-                printf("%s", referenceToString(ref));
+                fprintf(output, "%s", referenceToString(ref));
             }
         }
-    } else if (strcmp(argv[1], "-u") == 0) {
-        if (argc < 2) {
-            fprintf(stderr, "Usage %s -u bibFile\n", argv[0]);
-            exit(0);
-        }
-
-        calcPrefix(argv[2]);
-    } else if (strcmp(argv[1], "-o") == 0) {
-        fprintf(stderr, "-o non gérée encore\n");
-        exit(0);
     } else {
-        fprintf(stderr, "Usage %s [-bcekstuo]\n", argv[0]);
+        fprintf(stderr, "Usage %s [-bcst] -o\n", programName);
         exit(0);
     }
 
