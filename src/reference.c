@@ -83,7 +83,7 @@ TypeReference getType(char* s) {
     for (int i = 0; str[i]; i++) {
         str[i] = tolower(str[i]);
     }
-    
+        
     for (int i = 0; i < NB_TYPE_REF; ++i) {
         if (strcmp(str, typeReferenceArray[i]) == 0) {
             return i;
@@ -136,7 +136,7 @@ char* referenceToString(Reference ref) {
 	switch(ref->type) {
 		case ref_article :
 				snprintf(result, SIZE_BUFFER_REFERENCE,
-						"@%s{%s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s\n}\n",
+						"@%s{%s,\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s}\n}\n",
 						typeReferenceArray[ref_article],
 						ref->id,
 						champReferenceArray[ref_author],
@@ -162,8 +162,8 @@ char* referenceToString(Reference ref) {
 				break;
 		case ref_book :
 				snprintf(result, SIZE_BUFFER_REFERENCE,
-						"@%s{%s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s\n}\n",
-						typeReferenceArray[ref_article],
+						"@%s{%s,\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s}\n}\n",
+						typeReferenceArray[ref_book],
 						ref->id,
 						champReferenceArray[ref_address],
 						ref->champs[ref_address],
@@ -194,8 +194,8 @@ char* referenceToString(Reference ref) {
 				break;
 		case ref_booklet :
 				snprintf(result, SIZE_BUFFER_REFERENCE,
-						"@%s{%s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s\n}\n",
-						typeReferenceArray[ref_article],
+						"@%s{%s,\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s}\n}\n",
+						typeReferenceArray[ref_booklet],
 						ref->id,
 						champReferenceArray[ref_address],
 						ref->champs[ref_address],
@@ -216,8 +216,8 @@ char* referenceToString(Reference ref) {
 				break;
 		case ref_conference :
 				snprintf(result, SIZE_BUFFER_REFERENCE,
-						"@%s{%s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s\n}\n",
-						typeReferenceArray[ref_article],
+						"@%s{%s,\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s}\n}\n",
+						typeReferenceArray[ref_conference],
 						ref->id,
 						champReferenceArray[ref_address],
 						ref->champs[ref_address],
@@ -246,8 +246,8 @@ char* referenceToString(Reference ref) {
 				break;
 		case ref_inbook :
 				snprintf(result, SIZE_BUFFER_REFERENCE,
-						"@%s{%s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s\n}\n",
-						typeReferenceArray[ref_article],
+						"@%s{%s,\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s}\n}\n",
+						typeReferenceArray[ref_inbook],
 						ref->id,
 						champReferenceArray[ref_address],
 						ref->champs[ref_address],
@@ -282,8 +282,8 @@ char* referenceToString(Reference ref) {
 				break;
 		case ref_incollection :
 				snprintf(result, SIZE_BUFFER_REFERENCE,
-						"@%s{%s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s\n}\n",
-						typeReferenceArray[ref_article],
+						"@%s{%s,\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s}\n}\n",
+						typeReferenceArray[ref_incollection],
 						ref->id,
 						champReferenceArray[ref_address],
 						ref->champs[ref_address],
@@ -312,8 +312,8 @@ char* referenceToString(Reference ref) {
 				break;
 		case ref_inproceedings :
 				snprintf(result, SIZE_BUFFER_REFERENCE,
-						"@%s{%s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s\n}\n",
-						typeReferenceArray[ref_article],
+						"@%s{%s,\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s}\n}\n",
+						typeReferenceArray[ref_inproceedings],
 						ref->id,
 						champReferenceArray[ref_address],
 						ref->champs[ref_address],
@@ -342,8 +342,8 @@ char* referenceToString(Reference ref) {
 				break;
 		case ref_manual :
 				snprintf(result, SIZE_BUFFER_REFERENCE,
-						"@%s{%s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s\n}\n",
-						typeReferenceArray[ref_article],
+						"@%s{%s,\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s}\n}\n",
+						typeReferenceArray[ref_manual],
 						ref->id,
 						champReferenceArray[ref_address],
 						ref->champs[ref_address],
@@ -366,8 +366,8 @@ char* referenceToString(Reference ref) {
 				break;
 		case ref_mastersthesis :
 				snprintf(result, SIZE_BUFFER_REFERENCE,
-						"@%s{%s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s\n}\n",
-						typeReferenceArray[ref_article],
+						"@%s{%s,\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s}\n}\n",
+						typeReferenceArray[ref_mastersthesis],
 						ref->id,
 						champReferenceArray[ref_address],
 						ref->champs[ref_address],
@@ -388,8 +388,8 @@ char* referenceToString(Reference ref) {
 				break;
 		case ref_misc :
 				snprintf(result, SIZE_BUFFER_REFERENCE,
-						"@%s{%s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s\n}\n",
-						typeReferenceArray[ref_article],
+						"@%s{%s,\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s}\n}\n",
+						typeReferenceArray[ref_misc],
 						ref->id,
 						champReferenceArray[ref_author],
 						ref->champs[ref_author],
@@ -408,8 +408,8 @@ char* referenceToString(Reference ref) {
 				break;
 		case ref_phdthesis :
 				snprintf(result, SIZE_BUFFER_REFERENCE,
-						"@%s{%s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s\n}\n",
-						typeReferenceArray[ref_article],
+						"@%s{%s,\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s}\n}\n",
+						typeReferenceArray[ref_phdthesis],
 						ref->id,
 						champReferenceArray[ref_address],
 						ref->champs[ref_address],
@@ -430,8 +430,8 @@ char* referenceToString(Reference ref) {
 				break;
 		case ref_proceedings :
 				snprintf(result, SIZE_BUFFER_REFERENCE,
-						"@%s{%s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s\n}\n",
-						typeReferenceArray[ref_article],
+						"@%s{%s,\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s}\n}\n",
+						typeReferenceArray[ref_proceedings],
 						ref->id,
 						champReferenceArray[ref_address],
 						ref->champs[ref_address],
@@ -454,8 +454,8 @@ char* referenceToString(Reference ref) {
 				break;
 		case ref_techreport :
 				snprintf(result, SIZE_BUFFER_REFERENCE,
-						"@%s{%s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s\n}\n",
-						typeReferenceArray[ref_article],
+						"@%s{%s,\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s}\n}\n",
+						typeReferenceArray[ref_techreport],
 						ref->id,
 						champReferenceArray[ref_address],
 						ref->champs[ref_address],
@@ -480,8 +480,8 @@ char* referenceToString(Reference ref) {
 				break;
 		case ref_unpublished :
 				snprintf(result, SIZE_BUFFER_REFERENCE,
-						"@%s{%s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s,\n\t%s = %s\n}\n",
-						typeReferenceArray[ref_article],
+						"@%s{%s,\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s},\n\t%s = {%s}\n}\n",
+						typeReferenceArray[ref_unpublished],
 						ref->id,
 						champReferenceArray[ref_author],
 						ref->champs[ref_author],

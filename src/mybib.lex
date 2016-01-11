@@ -15,9 +15,8 @@ INPUT \\input\{[^\}]+\}
 
 TYPEREF @Article|@Book|@Booklet|@Conference|@Inbook|@Incollection|@Inproceedings|@Manual|@Mastersthesis|@Misc|@Phdthesis|@Proceedings|@Techreport|@Unpublished
 TYPECHAMP address|abstract|annote|author|booktitle|chapter|crossref|edition|editor|eprint|howpublished|institution|isbn|journal|key|month|note|number|organization|pages|publisher|school|series|title|type|url|volume|year
-KEY [a-zA-Z0-9]+(:[a-zA-Z0-9])*
-
-CARAC [^\ ]
+KEY \{[a-zA-Z0-9]+(:[a-zA-Z0-9]+)*,
+VAL \{.*\},|\{.*\}\n
 
 %s latex
 %s bibtex
@@ -76,16 +75,16 @@ CARAC [^\ ]
 }
 
 <bibtex>{TYPEREF} {
-    size_t size = strlen(yytext);
-    yylval.string = malloc(size);
-    memcpy(yylval.string, &yytext[1], size - 1);
+    size_t size = strlen(yytext) - 1;
+    yylval.string = malloc(size + 1);
+    memcpy(yylval.string, &yytext[1], size);
     yylval.string[size] = '\0';
-    printf("Ref : %s\n", yylval.string);
+    //printf("Ref : %s\n", yylval.string);
     return TYPEREF;
 }
 
 <bibtex>{TYPECHAMP} {
-    printf("Champ : %s\n", yytext);
+    //printf("Champ : %s\n", yytext);
     size_t size = strlen(yytext);
     yylval.string = malloc(size + 1);
     memcpy(yylval.string, &yytext[0], size);
@@ -94,24 +93,24 @@ CARAC [^\ ]
 }
 
 <bibtex>{KEY} {
-    size_t size = strlen(yytext) - 1;
+    size_t size = strlen(yytext) - 2;
     yylval.string = malloc(size + 1);
-    memcpy(yylval.string, &yytext[0], size);
+    memcpy(yylval.string, &yytext[1], size);
     yylval.string[size] = '\0';
-    printf("Key : %s\n", yylval.string);
+    //printf("Key : %s\n", yylval.string);
     return KEY;
 }
 
-<bibtex>\{ return '{';
-<bibtex>\} return '}';
-<bibtex>\n return '\n';
-<bibtex>, return ',';
-<bibtex>= return '=';
-
-<bibtex>{CARAC} {
-    yylval.carac = yytext[0];
-    return CARAC;
+<bibtex>{VAL} {
+    size_t size = strlen(yytext) - 3;
+    yylval.string = malloc(size + 1);
+    memcpy(yylval.string, &yytext[1], size);
+    yylval.string[size] = '\0';
+    //printf("Val : %s\n", yylval.string);
+    return VAL;
 }
+
+<bibtex>\} return '}';
 
 .|\n {}
 %%
@@ -148,7 +147,41 @@ int yywrap(void) {
     return 1;
 }
 
+int champValComp(ChampVal v1, ChampVal v2) {
+    if (v1->champ == v2->champ) {
+        return strcmp(v1->val, v2->val);
+    }
+    return v1->champ - v2->champ;
+}
+
+// Calcul du prefixe
+void calcPrefix(char* s) {
+    char* p = strchr(s, '/');
+    if (p != NULL) {
+        size_t size = p - s + 1;
+        filePrefix = malloc(size + 1);
+        memcpy(filePrefix, s, size);
+        filePrefix[size] = '\0';
+    } else {
+        filePrefix = malloc(1);
+        filePrefix[0] = '\0';
+    }
+}
+
 int main(int argc, char** argv) {
+    if (argc == 0) {
+        fprintf(stderr, "Usage %s [-bcekstuo]\n", argv[0]);
+        exit(0);
+    }
+
+    // Initialisation des variables globales.
+    refManager = newRefManager();
+
+    keys = newSortedSet((int (*) (void*, void*)) strcmp);
+    texFiles = newList((int (*) (void*, void*)) strcmp);
+    bibFiles = newList((int (*) (void*, void*)) strcmp);
+    champValList = newList((int (*) (void*, void*)) champValComp);
+
     /**
     -b 1 arg  : genere un bibtex a partir d'un .tex
     -c 1 arg  : verifie que chaque toutes les entrées ont une entrée propre
@@ -159,32 +192,79 @@ int main(int argc, char** argv) {
     -u 1 arg  : supprime les doublons
     -o 1 arg  : redirection de la sortie standard dans un fichier
     */
-    if (argc > 1) {
-        yyin = fopen(argv[1], "r");
+    if (strcmp(argv[1], "-b") == 0) {
+        if (argc < 2) {
+            fprintf(stderr, "Usage %s -b texFile\n", argv[0]);
+            exit(0);
+        }
+
+        calcPrefix(argv[2]);
+        yyin = fopen(argv[2], "r");
+        BEGIN(latex);
+        yyparse();
+
+        initIteratorSortedSet(keys);
+        while (hasNextSortedSet(keys)) {
+            char* key = nextSortedSet(keys);
+            printf("Key : %s\n", key);
+            Reference ref = getRefManager(refManager, key);
+            if (ref != NULL) {
+                printf("%s\n", referenceToString(ref));
+            }
+        }
+    } else if (strcmp(argv[1], "-c") == 0) {
+        if (argc < 2) {
+            fprintf(stderr, "Usage %s -c bibFile\n", argv[0]);
+            exit(0);
+        }
+
+        calcPrefix(argv[2]);
+
+        SortedSet set = newSortedSet((int (*) (void*, void*)) strcmp);
+
+        
+    } else if (strcmp(argv[1], "-e") == 0) {
+        if (argc < 4) {
+            fprintf(stderr, "Usage %s -e opt regexp bibFile\n", argv[0]);
+            exit(0);
+        }
+
+        calcPrefix(argv[4]);
+    } else if (strcmp(argv[1], "-k") == 0) {
+        if (argc < 2) {
+            fprintf(stderr, "Usage %s -k bibFile\n", argv[0]);
+            exit(0);
+        }
+
+        calcPrefix(argv[2]);
+    } else if (strcmp(argv[1], "-s") == 0) {
+        if (argc < 2) {
+            fprintf(stderr, "Usage %s -s bibFile\n", argv[0]);
+            exit(0);
+        }
+
+        calcPrefix(argv[2]);
+    } else if (strcmp(argv[1], "-t") == 0) {
+        if (argc < 3) {
+            fprintf(stderr, "Usage %s -t type bibFile\n", argv[0]);
+            exit(0);
+        }
+
+        calcPrefix(argv[3]);
+    } else if (strcmp(argv[1], "-u") == 0) {
+        if (argc < 2) {
+            fprintf(stderr, "Usage %s -u bibFile\n", argv[0]);
+            exit(0);
+        }
+
+        calcPrefix(argv[2]);
+    } else if (strcmp(argv[1], "-o") == 0) {
+        fprintf(stderr, "-o non gérée encore\n");
+        exit(0);
     } else {
-        yyin = stdin;
+        fprintf(stderr, "Usage %s [-bcekstuo]\n", argv[0]);
+        exit(0);
     }
 
-    // Calcul du prefixe
-    char* p = strchr(argv[1], '/');
-    if (p != NULL) {
-        size_t size = p - argv[1] + 1;
-        filePrefix = malloc(size + 1);
-        memcpy(filePrefix, argv[1], size);
-        filePrefix[size] = '\0';
-        printf("Pref : %s\n", filePrefix);
-    } else {
-        filePrefix = malloc(1);
-        filePrefix[0] = '\0';
-    }
-
-    refManager = newRefManager();
-
-    keys = newSortedSet((int (*) (void*, void*)) strcmp);
-    texFiles = newList((int (*) (void*, void*)) strcmp);
-    bibFiles = newList((int (*) (void*, void*)) strcmp);
-
-
-    BEGIN(latex);
-    yyparse();
+    return EXIT_SUCCESS;
 }
