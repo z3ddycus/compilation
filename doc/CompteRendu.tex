@@ -1,0 +1,55 @@
+\documentclass[hidelinks, a4paper,11pt,twoside,final]{article}
+
+\usepackage[english,francais]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[pdftex]{graphicx}
+\usepackage{adjustbox}
+\usepackage{color}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage[french]{varioref}
+\usepackage{comment}
+
+%Opening
+\title{\bfseries Compte Rendu \\ Compilation}
+\geometry{hmargin=2.5cm,vmargin=3cm}
+\begin{document}
+\maketitle
+\begin{center}
+\begin{tabular}{ll}
+  Version~: & 0.1\\[.5em]
+  Date~: & \date{\today}\\[.5em]
+  Rédigé par~: & Thomas \textsc{Capet}\\
+               & Yohann \textsc{Henry}\\
+\end{tabular}
+\end{center}
+
+\newpage
+
+%Table of contents
+\newpage
+\tableofcontents
+
+%Contents
+\newpage
+
+\section{Introduction}
+Le projet consiste en la création d'un exécutable permettant la gestion de références contenues dans des fichiers \texttt{bibtex} ou \texttt{LaTeX}.
+L'exécutable devait notament extraire les clés cités d'un fichier d'extension \texttt{.tex}, ainsi que les données contenues dans un fichier \texttt{.bib}.
+L'application effectuerait ensuite selon les options différents traitement et afficherait le résultat sur la sortie standard ou un fichier.
+
+\subsection{Structures de données utilisées}
+\subsubsection{Collections}
+Pour travailler, nous avons d'abord développé plusieurs structures de données génériques de type collection :
+\begin{itemize}
+ \item Les listes ordonnées 
+ \item Les sets ordonnées (ainsi que son homologue non ordonné)
+ \item Les maps sous la forme d'une liste ordonnée 
+ \item Les tables de hachage
+\end{itemize}
+
+\subsubsection{Références}
+Nous avons ensuite créer un type Références. Ces derniers représentent toutes les données nécessaires pour enregistrer une référence.
+\end{document}
