@@ -1,7 +1,7 @@
 \documentclass[hidelinks, a4paper,11pt,twoside,final]{article}
 
-\usepackage[english,francais]{babel}
 \usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
 \usepackage{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[pdftex]{graphicx}
@@ -14,7 +14,7 @@
 \usepackage{listings}
 \lstset{language=C}
 %Opening
-\title{\bfseries Compte Rendu \\ Compilation}
+\title{\bfseries Compte Rendu \\ Projet de compilation 2015-2016}
 \geometry{hmargin=2.5cm,vmargin=3cm}
 \begin{document}
 \maketitle
@@ -37,49 +37,49 @@
 \newpage
 
 \section{Introduction}
-Le projet consiste en la création d'un exécutable permettant la gestion de références contenues dans des fichiers \texttt{bibtex} ou \texttt{LaTeX}.
-L'exécutable devait notament extraire les clés cités d'un fichier d'extension \texttt{.tex}, ainsi que les données contenues dans un fichier \texttt{.bib}.
-L'application effectuerait ensuite selon les options différents traitement et afficherait le résultat sur la sortie standard ou un fichier.
+Le projet consiste en la création d'un exécutable permettant la gestion de références contenues dans des fichiers \texttt{bibtex} ou \LaTeX.
+L'exécutable devait notamment extraire les clés de fichiers d'extension \texttt{.tex}, ainsi que les données contenues dans un fichier \texttt{.bib}.
+L'application effectuerait ensuite selon les options différents traitements et afficherait le résultat sur la sortie standard ou dans un fichier.
 
 \section{Notice d'utilisation}
 \subsection{Option -t}
 \texttt{mybib commande -t type nomFichier.bib}
 \newline
-Affiche sur la sortie standard, le contenu du fichier \texttt{nomFichier.bib} 
-en le privant de tous les champs différents de \texttt{type}.
+Affiche sur la sortie standard le contenu du fichier \texttt{nomFichier.bib} 
+en le privant de tous les blocs différents de \texttt{type}.
 
 \subsection{Option -c}
 \texttt{mybib commande -c nomFichier.bib}
 \newline
-N'affiche sur la sortie standard uniquement les références ayant une clé propre.
+Affiche sur la sortie standard les clés en doublon dans le fichier \texttt{.bib}.
 
 \subsection{Option -k}
 \texttt{mybib commande -k nomFichier.bib}
 \newline
-Avec cette commande, le fichier \texttt{nomfichier.bib} est parsé pour en extraire les clés et les renommer selon une les initiales des auteurs suivis 
-de la date et d'un nombre permettant de différencier les homonymes s'il y en a.
-Par exemple pour les auteurs Alfred, Lady Gaga, Batman ayant écrit un livre en 2017, la clé serait ALB:2017.
+Avec cette commande, le fichier \texttt{nomfichier.bib} est parsé pour en extraire les clés et les renommer selon les initiales des auteurs suivis 
+de la date et d'un nombre permettant de différencier les doublons s'il y en a.
+Par exemple, pour les auteurs Alfred, Lady Gaga, Batman ayant écrit un livre en 2017, la clé serait ALB:2017.
 
 \subsection{Option -b}
 \texttt{mybib -b toto.tex}
 \newline
-Si l'option \texttt{-b} est choisies le fichier \texttt{.tex} est parsé pour extraire les inclusions de fichier \texttt{.bib} et \texttt{.tex}
-afin d'en extraire le maximum de données. 
-Les références sont ensuite affichées sur la sortie standard.
+Si l'option \texttt{-b} est choisie le fichier \texttt{.tex} est parsé pour extraire les inclusions de fichier \texttt{.bib} et \texttt{.tex}
+afin d'en extraire les clés bibliographiques. 
+Les références tirées du \texttt{.bib} correspondant aux clés sont ensuite affichées sur la sortie standard.
 
 \subsection{Option -s}
 \texttt{mybib commande -s fichier.bib}
 \newline
-Avec cette option, le fichier \texttt{.bib} est parsé avant de produire sur la sortie,
+Avec cette option, le fichier \texttt{.bib} est parsé avant de produire sur la sortie
 le fichier en transformant les champs \texttt{publisher}, \texttt{organization}, \texttt{series} et  \texttt{journal}
-par des variables définies et factorisées au début du fichier. 
+en des variables définies et factorisées au début du fichier. 
 Chaque type de variable est définie dans un @String différent.
 
 \subsection{Option -o}
 \texttt{mybib commande -o nomFichier}
 \newline
 Par défaut, l'affichage se fait sur la sortie standard. 
-Avec l'option -o, l'affichage qui aurait été affiché sur la sortie standard sera à présent reporté sur le fichier nomFichier
+Avec l'option -o, l'affichage sur la sortie standard est à présent reporté sur le fichier \texttt{nomFichier}.
 
 
 \section{Structures de données utilisées}
@@ -91,9 +91,10 @@ Pour travailler, nous avons d'abord développé plusieurs structures de données
  \item Les maps sous la forme d'une liste ordonnée 
  \item Les tables de hachage
 \end{itemize}
+Toutes ces structures sont ensuite utilisées dans Flex et Yacc pour stocker les données de manière optimisée.
 
 \subsection{Références}
-Nous avons ensuite créer un type Référence. Ce dernier représente toutes les données nécessaires pour enregistrer une référence d'un bibtex.
+Nous avons ensuite créé un type Référence. Ce dernier représente toutes les données nécessaires pour enregistrer une référence d'un bloc \texttt{Bibtex}.
 \begin{lstlisting}
 struct _ref {
     TypeReference type;
@@ -105,15 +106,15 @@ typedef struct _ref * Reference;
 \end{lstlisting}
 
 Les attributs \texttt{type} et \texttt{id} sont trivialement le type et l'id de la référence.
-L'attribut \texttt{champs} est un tableau qui attribut à un type de champ une valeur en chaîne de caractères.
+L'attribut \texttt{champs} est un tableau qui attribue à un type de champ une valeur en chaîne de caractères.
 Par défaut, cette valeur est initialisée avec une chaine de caractères vide.
 Plusieurs fonctions sont présentes dans \texttt{references.h} pour simplifier les différentes options demandées.
-Notamment, une des fonctions permet d'écrire sur un flux, le contenu d'une référence avec tous les champs obligatoires ou optionnels de ce type.
+Notamment, une des fonctions permet d'écrire dans un flux le contenu d'une référence avec tous les champs obligatoires ou optionnels de ce type.
 
 \subsection {Les gestionnaire de références}
-Nous avons finalement créer un type RefManager, un gestionnaire de références.
-Ce dernier nous permait de stocker toutes les références contenus dans les \texttt{.tex} et les \texttt{.bib}. 
-Une fois le gestionnaire remplis, on traite les données selon les options demandées.
+Nous avons finalement créé un type \texttt{RefManager}, un gestionnaire de références.
+Ce dernier nous permet de stocker toutes les références contenues dans les \texttt{.tex} et les \texttt{.bib}. 
+Une fois le gestionnaire rempli, on traite les données selon les options demandées.
 
 \begin{lstlisting}
 struct _ref_manager {
@@ -124,13 +125,13 @@ struct _ref_manager {
 typedef struct _ref_manager* RefManager;
 \end{lstlisting}
 
-Le gestionnaire de références est une simple table de hachage avec pour clé, l'id d'une référence et en valeur, la référence correspondante.
-Comme pour référence, plusieurs fonctions utilitaires ont permis de simplifier les différentes options.
+Le gestionnaire de références est une simple table de hachage avec pour clé l'id d'une référence et en valeur la référence correspondante.
+Comme pour \texttt{Référence}, plusieurs fonctions utilitaires ont permis de simplifier les différentes options.
 
 \section{La grammaire}
 \subsection{Les tokens}
-La grammaire est lancée en contenant le mode dans lequel elle est lancée. Elle reconnait donc soit un fichier Bibtex, 
-soit un fichier Latex, mais jamais les deux en même temps.
+La grammaire commence dans un mode selon le type de fichier qu'elle étudie. Elle reconnait donc soit un fichier Bibtex, 
+soit un fichier Latex, mais jamais les deux en même temps. Ainsi, pour l'option \texttt{-b}, la grammaire parse tous les fichiers \texttt{.tex} puis passe au \texttt{.bib} automatiquement.
 \subsubsection {Les tokens pour parser les .tex}
 \begin{itemize}
  \item \begin{verbatim}CITE : \cite{[^}]+}\end{verbatim}
