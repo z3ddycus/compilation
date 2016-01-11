@@ -43,12 +43,36 @@ L'application effectuerait ensuite selon les options différents traitement et a
 
 \section{Notice d'utilisation}
 \subsection{Option -t}
-\subsection{Option -o}
-\subsection{Option -b}
-\subsection{Option -s}
-\subsection{Option -o}
+\texttt{mybib commande -o nomFichier}
+\newline
 
-\section{Fonctionnement global}
+\subsection{Option -k}
+\texttt{mybib commande -k nomFichier.bib}
+\newline
+Avec cette commande, le fichier \texttt{nomfichier.bib} est parsé pour en extraire les clés et les renommer selon une les initiales des auteurs suivis 
+de la date et d'un nombre permettant de différencier les homonymes s'il y en a.
+Par exemple pour les auteurs Alfred, Lady Gaga, Batman ayant écrit un livre en 2017, la clé serait ALB:2017.
+
+\subsection{Option -b}
+\texttt{mybib -b toto.tex}
+\newline
+Si l'option \texttt{-b} est choisies le fichier \texttt{.tex} est parsé pour extraire les inclusions de fichier \texttt{.bib} et \texttt{.tex}
+afin d'en extraire le maximum de données. 
+Les références sont ensuite affichées sur la sortie standard.
+
+\subsection{Option -s}
+\texttt{mybib commande -s fichier.bib}
+\newline
+Avec cette option, le fichier \texttt{.bib} est parsé avant de produire sur la sortie,
+le fichier en transformant les champs \texttt{publisher}, \texttt{organization}, \texttt{series} et  \texttt{journal}
+par des variables définies et factorisées au début du fichier. 
+Chaque type de variable est définie dans un @String différent.
+
+\subsection{Option -o}
+\texttt{mybib commande -o nomFichier}
+\newline
+Par défaut, l'affichage se fait sur la sortie standard. 
+Avec l'option -o, l'affichage qui aurait été affiché sur la sortie standard sera à présent reporté sur le fichier nomFichier
 
 
 \section{Structures de données utilisées}
